@@ -156,11 +156,11 @@ let shaders = [
 gulp.task('workers', function(){
 
 	for(let workerName of Object.keys(workers)){
-
+		
 		gulp.src(workers[workerName])
 			.pipe(concat(`${workerName}.js`))
 			.pipe(gulp.dest('build/potree/workers'));
-
+		
 	}
 
 });
@@ -218,7 +218,7 @@ gulp.task('examples_page', function() {
 		for(let file of files){
 			let isHandled = false;
 			for(let url of urls){
-
+				
 				if(file.indexOf(url) !== -1){
 					isHandled = true;
 				}
@@ -232,7 +232,7 @@ gulp.task('examples_page', function() {
 			.filter(file => file.indexOf('.html') > 0)
 			.filter(file => file !== 'page.html');
 
-
+		
 		for(let file of unhandled){
 			unhandledCode += `
 				<a href="${file}" class="unhandled">${file}</a>
@@ -267,7 +267,7 @@ gulp.task('examples_page', function() {
 		</a>
 		`;
 	}
-
+	
 
 	let page = `
 		<html>
@@ -280,30 +280,30 @@ gulp.task('examples_page', function() {
 			}
 
 			.thumb{
-				background-size: 140px 140px;
-				width: 140px;
-				height: 140px;
-				border-radius: 5px;
-				border: 1px solid black;
-				box-shadow: 3px 3px 3px 0px #555;
-				margin: 0px;
+				background-size: 140px 140px; 
+				width: 140px; 
+				height: 140px; 
+				border-radius: 5px; 
+				border: 1px solid black; 
+				box-shadow: 3px 3px 3px 0px #555; 
+				margin: 0px; 
 				float: left;
 			}
 
 			.thumb-label{
-				font-size: large;
-				text-align: center;
-				font-weight: bold;
-				color: #FFF;
-				text-shadow:black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px;
+				font-size: large; 
+				text-align: center; 
+				font-weight: bold; 
+				color: #FFF; 
+				text-shadow:black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px; 
 				height: 100%;
 			}
 
 			.unhandled_container{
-				max-width: 1200px;
-				margin: auto;
-				margin-top: 50px;
-
+				max-width: 1200px; 
+				margin: auto; 
+				margin-top: 50px; 
+				
 			}
 
 			.unhandled{
@@ -351,8 +351,8 @@ gulp.task('examples_page', function() {
 				grid-row-start: 1;
 				grid-row-end: 1;
 
-				max-width: 1200px;
-				margin: auto;
+				max-width: 1200px; 
+				margin: auto; 
 				margin-top: 20px
 			}
 
@@ -371,8 +371,8 @@ gulp.task('examples_page', function() {
 				grid-row-start: 2;
 				grid-row-end: 2;
 
-				max-width: 1200px;
-				margin: auto;
+				max-width: 1200px; 
+				margin: auto; 
 				margin-top: 20px;
 			}
 
@@ -399,7 +399,7 @@ gulp.task('examples_page', function() {
 
 				</div>
 
-
+				
 
 				<div class="unhandled_container">
 					<h1>Other</h1>
@@ -430,7 +430,7 @@ gulp.task('icons_viewer', () => {
 		let other = items.filter(item => !item.endsWith('.svg'));
 
 		items = [...svgs, ...other];
-
+	
 		let iconsCode = ``;
 		for(let item of items){
 			let extension = path.extname(item);
@@ -487,11 +487,11 @@ gulp.task('watch', function() {
 	gulp.run('webserver');
 
 	let watchlist = [
-		'src/**/*.js',
-		'src/**/*.css',
-		'src/**/*.html',
-		'src/**/*.vs',
-		'src/**/*.fs',
+		'src/**/*.js', 
+		'src/**/*.css', 
+		'src/**/*.html', 
+		'src/**/*.vs', 
+		'src/**/*.fs', 
 		'resources/**/*',
 		'examples//**/*.json',
 	];
@@ -589,7 +589,7 @@ let encodeShader = function(fileName, varname, opt){
 			//console.log(fname);
 
 			let content = new Buffer(b).toString();
-
+			
 			let prep = `\nPotree.Shaders["${fname}"] = \`${content}\`\n`;
 
 			joinedContent += prep;
