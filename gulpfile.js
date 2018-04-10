@@ -36,7 +36,9 @@ let paths = {
 		'src/loader/BinaryLoader.js',
 		'src/loader/GreyhoundBinaryLoader.js',
 		'src/loader/GreyhoundLoader.js',
+		'src/loader/EptLoader.js',
 		'src/loader/LasLazLoader.js',
+		'src/loader/ept/LazLoader.js',
 		'src/materials/PointCloudMaterial.js',
 		'src/materials/EyeDomeLightingMaterial.js',
 		'src/materials/BlurMaterial.js',
@@ -55,7 +57,7 @@ let paths = {
 		'src/PointCloudOctree.js',
 		'src/PointCloudOctreeGeometry.js',
 		'src/PointCloudGreyhoundGeometry.js',
-		'src/PointCloudGreyhoundGeometryNode.js',
+		'src/PointCloudEptGeometry.js',
 		'src/utils.js',
 		'src/Features.js',
 		'src/TextSprite.js',
@@ -99,6 +101,85 @@ let paths = {
 		'src/InterleavedBuffer.js',
 		'src/utils/toInterleavedBufferAttribute.js',
 		'src/utils/GeoTIFF.js',
+		"src/KeyCodes.js",
+		"src/extensions/EventDispatcher.js",
+		"src/extensions/PerspectiveCamera.js",
+		"src/extensions/OrthographicCamera.js",
+		"src/extensions/Ray.js",
+		"src/Potree.js",
+		"src/PotreeRenderer.js",
+		"src/PointCloudTree.js",
+		"src/WorkerPool.js",
+		"build/shaders/shaders.js",
+		"src/loader/POCLoader.js",
+		"src/loader/PointAttributes.js",
+		"src/loader/BinaryLoader.js",
+		"src/loader/GreyhoundBinaryLoader.js",
+		"src/loader/GreyhoundLoader.js",
+		
+		
+		
+		"src/materials/PointCloudMaterial.js",
+		"src/materials/EyeDomeLightingMaterial.js",
+		"src/materials/BlurMaterial.js",
+		"src/materials/NormalizationMaterial.js",
+		"src/materials/NormalizationEDLMaterial.js",
+		"src/navigation/InputHandler.js",
+		"src/navigation/FirstPersonControls.js",
+		"src/navigation/GeoControls.js",
+		"src/navigation/OrbitControls.js",
+		"src/navigation/EarthControls.js",
+		"src/LRU.js",
+		"src/Annotation.js",
+		"src/Actions.js",
+		"src/ProfileRequest.js",
+		"src/PointCloudOctree.js",
+		"src/PointCloudOctreeGeometry.js",
+		"src/PointCloudGreyhoundGeometry.js",
+		
+		"src/utils.js",
+		"src/Features.js",
+		"src/TextSprite.js",
+		"src/AnimationPath.js",
+		"src/Version.js",
+		"src/utils/Measure.js",
+		"src/utils/MeasuringTool.js",
+		"src/utils/Profile.js",
+		"src/utils/ProfileTool.js",
+		"src/utils/TransformationTool.js",
+		"src/utils/Volume.js",
+		"src/utils/VolumeTool.js",
+		"src/utils/ClippingTool.js",
+		"src/utils/ScreenBoxSelectTool.js",
+		"src/utils/ClipVolume.js",
+		"src/utils/PolygonClipVolume.js",
+		"src/utils/Box3Helper.js",
+		"src/utils/PointCloudSM.js",
+		"src/utils/Message.js",
+		"src/utils/SpotLightHelper.js",
+		"src/exporter/GeoJSONExporter.js",
+		"src/exporter/DXFExporter.js",
+		"src/exporter/CSVExporter.js",
+		"src/exporter/LASExporter.js",
+		"src/arena4d/PointCloudArena4D.js",
+		"src/arena4d/PointCloudArena4DGeometry.js",
+		"src/viewer/PotreeRenderer.js",
+		"src/viewer/EDLRenderer.js",
+		"src/viewer/HQSplatRenderer.js",
+		"src/viewer/RepRenderer.js",
+		"src/viewer/View.js",
+		"src/viewer/Scene.js",
+		"src/viewer/viewer.js",
+		"src/viewer/profile.js",
+		"src/viewer/map.js",
+		"src/viewer/sidebar.js",
+		"src/viewer/PropertiesPanel.js",
+		"src/viewer/NavigationCube.js",
+		"src/stuff/HoverMenu.js",
+		"src/webgl/GLProgram.js",
+		"src/InterleavedBuffer.js",
+		"src/utils/toInterleavedBufferAttribute.js",
+		"src/utils/GeoTIFF.js",
 	],
 	laslaz: [
 		'build/workers/laslaz-worker.js',
@@ -121,6 +202,9 @@ let workers = {
 	],
 	LASDecoderWorker: [
 		'src/workers/LASDecoderWorker.js',
+	],
+	EptDecoderWorker: [
+		'src/workers/EptDecoderWorker.js',
 	],
 	BinaryDecoderWorker: [
 		'src/workers/BinaryDecoderWorker.js',
@@ -156,11 +240,11 @@ let shaders = [
 gulp.task('workers', function(){
 
 	for(let workerName of Object.keys(workers)){
-		
+
 		gulp.src(workers[workerName])
 			.pipe(concat(`${workerName}.js`))
 			.pipe(gulp.dest('build/potree/workers'));
-		
+
 	}
 
 });
@@ -218,7 +302,7 @@ gulp.task('examples_page', function() {
 		for(let file of files){
 			let isHandled = false;
 			for(let url of urls){
-				
+
 				if(file.indexOf(url) !== -1){
 					isHandled = true;
 				}
@@ -232,7 +316,7 @@ gulp.task('examples_page', function() {
 			.filter(file => file.indexOf('.html') > 0)
 			.filter(file => file !== 'page.html');
 
-		
+
 		for(let file of unhandled){
 			unhandledCode += `
 				<a href="${file}" class="unhandled">${file}</a>
@@ -267,7 +351,7 @@ gulp.task('examples_page', function() {
 		</a>
 		`;
 	}
-	
+
 
 	let page = `
 		<html>
@@ -280,30 +364,30 @@ gulp.task('examples_page', function() {
 			}
 
 			.thumb{
-				background-size: 140px 140px; 
-				width: 140px; 
-				height: 140px; 
-				border-radius: 5px; 
-				border: 1px solid black; 
-				box-shadow: 3px 3px 3px 0px #555; 
-				margin: 0px; 
+				background-size: 140px 140px;
+				width: 140px;
+				height: 140px;
+				border-radius: 5px;
+				border: 1px solid black;
+				box-shadow: 3px 3px 3px 0px #555;
+				margin: 0px;
 				float: left;
 			}
 
 			.thumb-label{
-				font-size: large; 
-				text-align: center; 
-				font-weight: bold; 
-				color: #FFF; 
-				text-shadow:black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px; 
+				font-size: large;
+				text-align: center;
+				font-weight: bold;
+				color: #FFF;
+				text-shadow:black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px, black 0 0 5px;
 				height: 100%;
 			}
 
 			.unhandled_container{
-				max-width: 1200px; 
-				margin: auto; 
-				margin-top: 50px; 
-				
+				max-width: 1200px;
+				margin: auto;
+				margin-top: 50px;
+
 			}
 
 			.unhandled{
@@ -351,8 +435,8 @@ gulp.task('examples_page', function() {
 				grid-row-start: 1;
 				grid-row-end: 1;
 
-				max-width: 1200px; 
-				margin: auto; 
+				max-width: 1200px;
+				margin: auto;
 				margin-top: 20px
 			}
 
@@ -371,8 +455,8 @@ gulp.task('examples_page', function() {
 				grid-row-start: 2;
 				grid-row-end: 2;
 
-				max-width: 1200px; 
-				margin: auto; 
+				max-width: 1200px;
+				margin: auto;
 				margin-top: 20px;
 			}
 
@@ -399,7 +483,7 @@ gulp.task('examples_page', function() {
 
 				</div>
 
-				
+
 
 				<div class="unhandled_container">
 					<h1>Other</h1>
@@ -430,7 +514,7 @@ gulp.task('icons_viewer', () => {
 		let other = items.filter(item => !item.endsWith('.svg'));
 
 		items = [...svgs, ...other];
-	
+
 		let iconsCode = ``;
 		for(let item of items){
 			let extension = path.extname(item);
@@ -487,11 +571,11 @@ gulp.task('watch', function() {
 	gulp.run('webserver');
 
 	let watchlist = [
-		'src/**/*.js', 
-		'src/**/*.css', 
-		'src/**/*.html', 
-		'src/**/*.vs', 
-		'src/**/*.fs', 
+		'src/**/*.js',
+		'src/**/*.css',
+		'src/**/*.html',
+		'src/**/*.vs',
+		'src/**/*.fs',
 		'resources/**/*',
 		'examples//**/*.json',
 	];
@@ -589,7 +673,7 @@ let encodeShader = function(fileName, varname, opt){
 			//console.log(fname);
 
 			let content = new Buffer(b).toString();
-			
+
 			let prep = `\nPotree.Shaders["${fname}"] = \`${content}\`\n`;
 
 			joinedContent += prep;
