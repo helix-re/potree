@@ -324,8 +324,8 @@ Potree.loadPointCloud = function (path, name, callback) {
 	};
 
     let failed = function() {
-        // callback({type: 'loading_failed'});
-        console.error(new Error(`failed to load point cloud from URL: ${path}`));
+        callback({ type: 'loading_failed' });
+        // console.error(new Error(`failed to load point cloud from URL: ${path}`));
     };
 
 	// load pointcloud
@@ -346,11 +346,7 @@ Potree.loadPointCloud = function (path, name, callback) {
         // assume it's a greyhound server URL.
 		Potree.GreyhoundLoader.load(path, function (geometry) {
 			if (!geometry) {
-<<<<<<< HEAD
-				callback({ type: 'loading_failed' });
-=======
                 failed();
->>>>>>> d51f798c... Prototype EPT loader.  Combine Greyhound geometry/node to match other loaders.
 			} else {
 				let pointcloud = new Potree.PointCloudOctree(geometry);
 				loaded(pointcloud);
@@ -359,11 +355,7 @@ Potree.loadPointCloud = function (path, name, callback) {
 	} else if (path.indexOf('cloud.js') > 0) {
 		Potree.POCLoader.load(path, function (geometry) {
 			if (!geometry) {
-<<<<<<< HEAD
-				callback({ type: 'loading_failed' });
-=======
                 failed();
->>>>>>> d51f798c... Prototype EPT loader.  Combine Greyhound geometry/node to match other loaders.
 			} else {
 				let pointcloud = new Potree.PointCloudOctree(geometry);
 				loaded(pointcloud);
@@ -372,11 +364,7 @@ Potree.loadPointCloud = function (path, name, callback) {
 	} else if (path.indexOf('.vpc') > 0) {
 		Potree.PointCloudArena4DGeometry.load(path, function (geometry) {
 			if (!geometry) {
-<<<<<<< HEAD
-				callback({ type: 'loading_failed' });
-=======
                 failed();
->>>>>>> d51f798c... Prototype EPT loader.  Combine Greyhound geometry/node to match other loaders.
 			} else {
 				let pointcloud = new Potree.PointCloudArena4D(geometry);
 				loaded(pointcloud);
@@ -582,22 +570,29 @@ Potree.updateVisibility = function(pointclouds, camera, renderer){
 		visible = visible && !(numVisiblePoints + node.getNumPoints() > Potree.pointBudget);
 		visible = visible && !(numVisiblePointsInPointclouds.get(pointcloud) + node.getNumPoints() > pointcloud.pointBudget);
 		visible = visible && level < maxLevel;
+		//visible = visible && node.name !== "r613";
+
+		
 
 
 		if(!window.warned125){
 			// TODO
 			window.warned125 = true;
 		}
-		if(false && pointcloud.material.clipBoxes.length > 0){
 
-
+		let clipBoxes = pointcloud.material.clipBoxes;
+		if(true && clipBoxes.length > 0){
 
 			//node.debug = false;
 
 			let numIntersecting = 0;
 			let numIntersectionVolumes = 0;
 
-			for(let clipBox of pointcloud.material.clipBoxes){
+			if(node.name === "r60"){
+				var a = 10;
+			}
+
+			for(let clipBox of clipBoxes){
 
 				let pcWorldInverse = new THREE.Matrix4().getInverse(pointcloud.matrixWorld);
 				let toPCObject = pcWorldInverse.multiply(clipBox.box.matrixWorld);
@@ -622,6 +617,26 @@ Potree.updateVisibility = function(pointclouds, camera, renderer){
 				let nyPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(nyN, ny);
 				let pzPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(pzN, pz);
 				let nzPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(nzN, nz);
+
+				if(window.debugdraw !== undefined && window.debugdraw === true && node.name === "r60"){
+
+					Potree.utils.debugPlane(viewer.scene.scene, pxPlane);
+					Potree.utils.debugPlane(viewer.scene.scene, nxPlane);
+					//Potree.utils.debugBox(viewer.scene.scene, clipBox.box.boundingBox, toPCObject, 0xFF0000);
+					//Potree.utils.debugBox(viewer.scene.scene, box, new THREE.Matrix4(), 0x00FF00);
+
+					//let scale = 0.1;
+					//Potree.utils.debugSphere(viewer.scene.scene, px, scale, 0xFF0000);
+					//Potree.utils.debugSphere(viewer.scene.scene, nx, scale, 0xFF0000);
+					//Potree.utils.debugSphere(viewer.scene.scene, py, scale, 0x00FF00);
+					//Potree.utils.debugSphere(viewer.scene.scene, ny, scale, 0x00FF00);
+					//Potree.utils.debugSphere(viewer.scene.scene, pz, scale, 0x0000FF);
+					//Potree.utils.debugSphere(viewer.scene.scene, nz, scale, 0x0000FF);
+					//
+					//Potree.utils.debugBox(viewer.scene.scene, box, pointcloud.matrixWorld);
+
+					window.debugdraw = false;
+				}
 
 				let frustum = new THREE.Frustum(pxPlane, nxPlane, pyPlane, nyPlane, pzPlane, nzPlane);
 				let intersects = frustum.intersectsBox(box);

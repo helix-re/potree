@@ -230,7 +230,7 @@ Potree.PointCloudArena4DGeometry = class PointCloudArena4DGeometry extends THREE
 					geometry.offset = offset;
 
 					let center = geometry.boundingBox.getCenter();
-					let radius = geometry.boundingBox.getSize().length() / 2;
+					let radius = geometry.boundingBox.getSize(new THREE.Vector3()).length() / 2;
 					geometry.boundingSphere = new THREE.Sphere(center, radius);
 
 					geometry.loadHierarchy();
@@ -302,7 +302,7 @@ Potree.PointCloudArena4DGeometry = class PointCloudArena4DGeometry extends THREE
 				if (stack.length > 0) {
 					let parent = stack[stack.length - 1];
 					node.boundingBox = parent.boundingBox.clone();
-					let parentBBSize = parent.boundingBox.getSize();
+					let parentBBSize = parent.boundingBox.getSize(new THREE.Vector3());
 
 					if (parent.hasLeft && !parent.left) {
 						parent.left = node;
@@ -317,7 +317,7 @@ Potree.PointCloudArena4DGeometry = class PointCloudArena4DGeometry extends THREE
 						}
 
 						let center = node.boundingBox.getCenter();
-						let radius = node.boundingBox.getSize().length() / 2;
+						let radius = node.boundingBox.getSize(new THREE.Vector3()).length() / 2;
 						node.boundingSphere = new THREE.Sphere(center, radius);
 					} else {
 						parent.right = node;
@@ -332,18 +332,18 @@ Potree.PointCloudArena4DGeometry = class PointCloudArena4DGeometry extends THREE
 						}
 
 						let center = node.boundingBox.getCenter();
-						let radius = node.boundingBox.getSize().length() / 2;
+						let radius = node.boundingBox.getSize(new THREE.Vector3()).length() / 2;
 						node.boundingSphere = new THREE.Sphere(center, radius);
 					}
 				} else {
 					root = node;
 					root.boundingBox = this.boundingBox.clone();
 					let center = root.boundingBox.getCenter();
-					let radius = root.boundingBox.getSize().length() / 2;
+					let radius = root.boundingBox.getSize(new THREE.Vector3()).length() / 2;
 					root.boundingSphere = new THREE.Sphere(center, radius);
 				}
 
-				let bbSize = node.boundingBox.getSize();
+				let bbSize = node.boundingBox.getSize(new THREE.Vector3());
 				node.spacing = ((bbSize.x + bbSize.y + bbSize.z) / 3) / 75;
 				node.estimatedSpacing = node.spacing;
 
