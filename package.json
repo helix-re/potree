@@ -37,6 +37,7 @@
     "gulp-uglify": "^3.0.2",
     "gulp-util": "~2.2.20",
     "jshint": "^2.9.5",
+    "rollup": "^1.27.5",
     "through": "~2.3.4",
     "uglify-es": "^3.3.9"
   },

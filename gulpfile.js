@@ -1,5 +1,7 @@
 const path = require('path');
 const gulp = require('gulp');
+const exec = require('child_process').exec;
+
 
 const fs = require('fs');
 const concat = require('gulp-concat');
@@ -253,10 +255,14 @@ gulp.task('shaders', () => gulp.src(shaders)
 	.pipe(encodeShader('shaders.js', 'Potree.Shader'))
 	.pipe(gulp.dest('build/shaders')));
 
-gulp.task('scripts', ['workers', 'shaders', 'icons_viewer', 'examples_page'], () => {
-	gulp.src(paths.laslaz)
-		.pipe(concat('laslaz.js'))
-		.pipe(gulp.dest('build/potree'));
+gulp.task("build", ['workers', 'shaders', "icons_viewer", "examples_page"], function(){
+	//gulp.src(paths.potree)
+	//	.pipe(concat('potree.js'))
+	//	.pipe(gulp.dest('build/potree'));
+
+	//gulp.src(paths.laslaz)
+	//	.pipe(concat('laslaz.js'))
+	//	.pipe(gulp.dest('build/potree'));
 
 	gulp.src(paths.html)
 		.pipe(gulp.dest('build/potree'));
@@ -268,20 +274,20 @@ gulp.task('scripts', ['workers', 'shaders', 'icons_viewer', 'examples_page'], ()
 		.pipe(gulp.dest('build/potree'));
 });
 
-gulp.task('develop', ['scripts'], () => {
-	gulp.src(paths.potree)
-		.pipe(concat('potree.js'))
-		.pipe(removeCode({ development: true }))
-		.pipe(gulp.dest('build/potree'));
-});
+// gulp.task('develop', ['scripts'], () => {
+// 	gulp.src(paths.potree)
+// 		.pipe(concat('potree.js'))
+// 		.pipe(removeCode({ development: true }))
+// 		.pipe(gulp.dest('build/potree'));
+// });
 
-gulp.task('build', ['scripts'], () => {
-	gulp.src(paths.potree)
-		.pipe(concat('potree.js'))
-		.pipe(removeCode({ development: false }))
-		.pipe(uglify())
-		.pipe(gulp.dest('build/potree'));
-});
+// gulp.task('build', ['scripts'], () => {
+// 	gulp.src(paths.potree)
+// 		.pipe(concat('potree.js'))
+// 		.pipe(removeCode({ development: false }))
+// 		.pipe(uglify())
+// 		.pipe(gulp.dest('build/potree'));
+// });
 
 // For development, it is now possible to use 'gulp webserver'
 // from the command line to start the server (default port is 8080)
@@ -570,8 +576,16 @@ gulp.task('icons_viewer', () => {
 });
 
 gulp.task('watch', function() {
-	gulp.run('develop');
+	gulp.run('build');
+	// gulp.run('develop');
 	gulp.run('webserver');
+
+	exec('rollup -c', function (err, stdout, stderr) {
+		console.log(stdout);
+		console.log(stderr);
+		//cb(err);
+	});
+
 
 	let watchlist = [
 		'src/**/*.js',
@@ -599,6 +613,12 @@ gulp.task('watch', function() {
 		console.log('watch event:');
 		console.log(cb);
 		gulp.run('build');
+
+		exec('rollup -c', function (err, stdout, stderr) {
+			console.log(stdout);
+			console.log(stderr);
+			//cb(err);
+		});
 	});
 
 });
@@ -667,7 +687,7 @@ let encodeShader = function(fileName, varname, opt){
 	function endStream(){
 		if (buffer.length === 0) return this.emit('end');
 
-		let joinedContent = '';
+		let joinedContent = `let Shaders = {};\n\n`;
 		for(let i = 0; i < buffer.length; i++){
 			let b = buffer[i];
 			let file = files[i];
@@ -676,11 +696,13 @@ let encodeShader = function(fileName, varname, opt){
 			//console.log(fname);
 
 			let content = new Buffer(b).toString();
-
-			let prep = `\nPotree.Shaders["${fname}"] = \`${content}\`\n`;
+			
+			let prep = `\Shaders["${fname}"] = \`${content}\`\n`;
 
 			joinedContent += prep;
 		}
+
+		joinedContent += "\nexport {Shaders};";
 
 		let joinedPath = path.join(firstFile.base, fileName);
 
