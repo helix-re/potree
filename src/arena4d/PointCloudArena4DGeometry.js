@@ -1,4 +1,7 @@
 
+
+import {EventDispatcher} from "../EventDispatcher.js";
+
 Potree.PointCloudArena4DGeometryNode = class PointCloudArena4DGeometryNode{
 
 	constructor(){
@@ -178,7 +181,7 @@ Potree.PointCloudArena4DGeometryNode = class PointCloudArena4DGeometryNode{
 
 
 
-Potree.PointCloudArena4DGeometry = class PointCloudArena4DGeometry extends THREE.EventDispatcher{
+Potree.PointCloudArena4DGeometry = class PointCloudArena4DGeometry extends EventDispatcher{
 
 	constructor(){
 		super();
