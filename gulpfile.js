@@ -414,17 +414,16 @@ gulp.task('icons_viewer', () => {
 
 });
 
-gulp.task('watch', function() {
-	gulp.run('build');
+gulp.task('watch', ['build', 'webserver'], function() {
 	// gulp.run('develop');
-	gulp.run('webserver');
+	//gulp.run("build");
 
 	exec('rollup -c', function (err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
-		//cb(err);
 	});
 
+	//gulp.run("webserver");
 
 	let watchlist = [
 		'src/**/*.js',

@@ -1629,7 +1629,7 @@ export class Viewer extends EventDispatcher{
 		}
 
 		// HELIX RE
-		if (window.THREE && window.THREE.REVISION === '85') {
+		if (window.THREE && window.THREE.REVISION === '93dev') {
 			this.update(this.clock.getDelta(), timestamp);
 			this.render();
 		}
