@@ -6,24 +6,23 @@ import {Utils} from "./utils.js";
 
 export class PointCloudOctreeGeometry{
 
-	constructor(){
-		this.url = null;
-		this.octreeDir = null;
-		this.spacing = 0;
-		this.boundingBox = null;
-		this.root = null;
-		this.nodes = null;
-		this.pointAttributes = null;
-		this.hierarchyStepSize = -1;
-		this.loader = null;
-	}
-	
-}
+    constructor(){
+        this.url = null;
+        this.octreeDir = null;
+        this.spacing = 0;
+        this.boundingBox = null;
+        this.root = null;
+        this.nodes = null;
+        this.pointAttributes = null;
+        this.hierarchyStepSize = -1;
+        this.loader = null;
+    }
+};
 
 export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 
-	constructor(name, pcoGeometry, boundingBox){
-		super();
+    constructor(name, pcoGeometry, boundingBox){
+        super();
 
 		this.id = PointCloudOctreeGeometryNode.IDCount++;
 		this.name = name;
@@ -36,7 +35,7 @@ export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 		this.numPoints = 0;
 		this.level = null;
 		this.loaded = false;
-		this.oneTimeDisposeHandlers = [];
+        this.oneTimeDisposeHandlers = [];
 	}
 
 	isGeometryNode(){
@@ -89,7 +88,7 @@ export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 		}
 
 		return url;
-	}
+    }
 
 	getHierarchyPath(){
 		let path = 'r/';
@@ -199,12 +198,12 @@ export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 				currentNode.spacing = pco.spacing / Math.pow(2, level);
 				parentNode.addChild(currentNode);
 				nodes[name] = currentNode;
-			}
+            }
 
 			node.loadPoints();
-		};
+        };
 		if ((node.level % node.pcoGeometry.hierarchyStepSize) === 0) {
-			// HELIX RE
+            // HELIX RE
 			const nodePath = node.getHierarchyPath() + '/' + node.name + '.hrc';
 			let hurl = node.pcoGeometry.octreeDir + '/' + nodePath + Potree.getSignatureKeyForPath(nodePath);
 			// end HELIX RE
@@ -251,6 +250,6 @@ export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 		}
 	}
 	
-};
+}
 
 PointCloudOctreeGeometryNode.IDCount = 0;
