@@ -6,20 +6,15 @@ const exec = require('child_process').exec;
 const fs = require('fs');
 const concat = require('gulp-concat');
 const uglifyjs = require('uglify-es');
-const size = require('gulp-size');
-const rename = require('gulp-rename');
 const composer = require('gulp-uglify/composer');
 const gutil = require('gulp-util');
 const removeCode = require('gulp-remove-code');
 const through = require('through');
-const os = require('os');
 const File = gutil.File;
 const connect = require('gulp-connect');
 const watch = require('glob-watcher');
 
 const uglify = composer(uglifyjs, console);
-
-let server;
 
 let paths = {
 	laslaz: [
@@ -47,13 +42,6 @@ let workers = {
 	EptDecoderWorker: [
 		'src/workers/EptDecoderWorker.js',
 	],
-	// BinaryDecoderWorker: [
-	// 	'src/workers/BinaryDecoderWorker.js',
-	// 	'src/Version.js',
-	// 	'src/loader/PointAttributes.js',
-	// 	'src/InterleavedBuffer.js',
-	// 	'src/utils/toInterleavedBufferAttribute.js',
-	// ],
 	GreyhoundBinaryDecoderWorker: [
 		'libs/plasio/workers/laz-perf.js',
 		'src/workers/GreyhoundBinaryDecoderWorker.js',
@@ -94,15 +82,7 @@ gulp.task('shaders', () => gulp.src(shaders)
 	.pipe(encodeShader('shaders.js', 'Potree.Shader'))
 	.pipe(gulp.dest('build/shaders')));
 
-gulp.task("build", ['workers', 'shaders', "icons_viewer", "examples_page"], function(){
-	//gulp.src(paths.potree)
-	//	.pipe(concat('potree.js'))
-	//	.pipe(gulp.dest('build/potree'));
-
-	//gulp.src(paths.laslaz)
-	//	.pipe(concat('laslaz.js'))
-	//	.pipe(gulp.dest('build/potree'));
-
+gulp.task("build", ['workers', 'shaders', 'icons_viewer', 'examples_page'], function(){
 	gulp.src(paths.html)
 		.pipe(gulp.dest('build/potree'));
 
