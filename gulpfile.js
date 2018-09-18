@@ -42,6 +42,9 @@ let workers = {
 	EptDecoderWorker: [
 		'src/workers/EptDecoderWorker.js',
 	],
+	EptBinaryDecoderWorker: [
+		'src/workers/EptBinaryDecoderWorker.js',
+	],
 	GreyhoundBinaryDecoderWorker: [
 		'libs/plasio/workers/laz-perf.js',
 		'src/workers/GreyhoundBinaryDecoderWorker.js',

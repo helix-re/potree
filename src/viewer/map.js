@@ -597,6 +597,7 @@ export class MapView{
 			constrainResolution: false
 		});
 
+		if (pointcloud.pcoGeometry.type == 'ept') return;
 		let url = pointcloud.pcoGeometry.url + '/../sources.json';
 		$.getJSON(url, (data) => {
 			let sources = data.sources;
@@ -667,8 +668,8 @@ export class MapView{
 		if (resized) {
 			this.map.updateSize();
 		}
-		
-		// 
+
+		//
 		let camera = this.viewer.scene.getActiveCamera();
 
 		let scale = this.map.getView().getResolution();
