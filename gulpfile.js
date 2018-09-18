@@ -39,8 +39,8 @@ let workers = {
 	LASDecoderWorker: [
 		'src/workers/LASDecoderWorker.js',
 	],
-	EptDecoderWorker: [
-		'src/workers/EptDecoderWorker.js',
+	EptLaszipDecoderWorker: [
+		'src/workers/EptLaszipDecoderWorker.js',
 	],
 	EptBinaryDecoderWorker: [
 		'src/workers/EptBinaryDecoderWorker.js',
