@@ -119,8 +119,8 @@ export function loadPointCloud(path, name, callback){
 	// load pointcloud
 	if (!path){
 		// TODO: callback? comment? Hello? Bueller? Anyone?
-	} else if (path.indexOf('entwine.json') > 0) {
-        EptLoader.load(path, function(geometry) {
+	} else if (path.indexOf('ept.json') > 0) {
+		EptLoader.load(path, function(geometry) {
             if (!geometry) {
                 failed();
             }
