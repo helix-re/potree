@@ -505,7 +505,7 @@ class WebGLTexture {
 				width, height, border, srcFormat, srcType,
 				data);
 		// HELIX RE
-		} else if (THREE.CanvasTexture && texture instanceof THREE.CanvasTexture) {
+		} else if (THREE.CanvasTexture && ((texture instanceof THREE.CanvasTexture) || (texture instanceof THREE.Texture))) {
 		// end HELIX RE
 			data = texture.image;
 
@@ -517,6 +517,8 @@ class WebGLTexture {
 
 			gl.texImage2D(this.target, level, internalFormat,
 				internalFormat, srcType, data);
+
+			if (texture instanceof THREE.Texture) {gl.generateMipmap(gl.TEXTURE_2D);}
 		}
 
 		gl.bindTexture(this.target, null);
@@ -1214,6 +1216,12 @@ export class Renderer {
 			shader.setUniform1i("classificationLUT", currentTextureBindingPoint);
 			gl.activeTexture(gl.TEXTURE0 + currentTextureBindingPoint);
 			gl.bindTexture(classificationTexture.target, classificationTexture.id);
+			currentTextureBindingPoint++;
+
+			let matcapTexture = this.textures.get(material.matcapTexture);
+			shader.setUniform1i("matcapTextureUniform", currentTextureBindingPoint);
+			gl.activeTexture(gl.TEXTURE0 + currentTextureBindingPoint);
+			gl.bindTexture(matcapTexture.target, matcapTexture.id);
 			currentTextureBindingPoint++;
 
 
