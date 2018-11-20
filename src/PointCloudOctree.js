@@ -476,12 +476,12 @@ export class PointCloudOctree extends PointCloudTree {
 	 *
 	 *
 	 * The return value is an array with all segments of the profile path
-	 *  let segment = {
-	 * 		start: 	THREE.Vector3,
-	 * 		end: 	THREE.Vector3,
-	 * 		points: {}
-	 * 		project: function()
-	 *  };
+	 *	let segment = {
+	 *		start:	THREE.Vector3,
+	 *		end:	THREE.Vector3,
+	 *		points: {}
+	 *		project: function()
+	 *	};
 	 *
 	 * The project() function inside each segment can be used to transform
 	 * that segments point coordinates to line up along the x-axis.
@@ -596,7 +596,7 @@ export class PointCloudOctree extends PointCloudTree {
 	 *
 	 *
 	 * params.pickWindowSize:	Look for points inside a pixel window of this size.
-	 * 							Use odd values: 1, 3, 5, ...
+	 *							Use odd values: 1, 3, 5, ...
 	 *
 	 *
 	 * TODO: only draw pixels that are actually read with readPixels().
