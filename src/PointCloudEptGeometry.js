@@ -52,12 +52,13 @@ Potree.PointCloudEptGeometry = class {
 		this.type = 'ept';
 
 		this.schema = schema;
-		this.ticks = info.ticks;
-		this.boundingBox = toBox3(bounds);
-		this.tightBoundingBox = toBox3(boundsConforming);
-		this.offset = toVector3([0, 0, 0]);
-		this.boundingSphere = this.boundingBox.getBoundingSphere();
-		this.tightBoundingSphere = this.tightBoundingBox.getBoundingSphere();
+		this.span = info.span;
+		this.boundingBox = U.toBox3(bounds);
+		this.tightBoundingBox = U.toBox3(boundsConforming);
+		this.offset = U.toVector3([0, 0, 0]);
+		this.boundingSphere = U.sphereFrom(this.boundingBox);
+		this.tightBoundingSphere = U.sphereFrom(this.tightBoundingBox);
+
 		this.version = new Potree.Version('1.6');
 
 		this.projection = null;
@@ -74,7 +75,7 @@ Potree.PointCloudEptGeometry = class {
 
 		this.pointAttributes = 'LAZ';
 		this.spacing =
-			(this.boundingBox.max.x - this.boundingBox.min.x) / this.ticks;
+			(this.boundingBox.max.x - this.boundingBox.min.x) / this.span;
 
 		let hierarchyType = info.hierarchyType || 'json';
 
