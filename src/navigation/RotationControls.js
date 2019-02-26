@@ -172,8 +172,8 @@ Potree.RotationControls = class RotationControls extends THREE.EventDispatcher{
 
 			let yaw = view.yaw;
 			let pivot = view.getPivot();
-
-			yaw -= progression * this.yawDelta;
+			const yawMove = progression * this.yawDelta;
+			yaw -= yawMove;
 
 			if (yaw < -Math.PI && this.yawDelta > 0) {
 				yaw = Math.PI;
@@ -183,21 +183,37 @@ Potree.RotationControls = class RotationControls extends THREE.EventDispatcher{
 			}
 
 			view.yaw = yaw;
-
-			if (fixedYawDelta) {
-				let position = this.scene.pointclouds[0].position;
-				const cameraDelta = new THREE.Vector3().subVectors(position, view.position);
-				let cameraMove = cameraDelta.clone();
-				cameraMove.applyAxisAngle(new THREE.Vector3(0,0,1), -yaw);
-				cameraMove = new THREE.Vector3().subVectors(cameraDelta,cameraMove);
-				console.log(cameraMove);
-				view.position.copy( new THREE.Vector3().addVectors(cameraMove,view.position));
-			} else {
-				let V = this.scene.view.direction.multiplyScalar(-view.radius);
-				let position = new THREE.Vector3().addVectors(pivot, V);
-
-				view.position.copy(position);
+			
+			if (this.pcCenter === undefined) { // Hacky
+				this.pcCenter = this.scene.pointclouds[0].position // This should be the center of the point cloud, or your initial view.position
 			}
+			if (fixedYawDelta !== 0) {
+				const position = this.pcCenter.clone(); 
+				const cameraPos = view.position.clone();
+				let cameraDelta = new THREE.Vector3().subVectors(position, cameraPos);
+				cameraDelta.setZ(0);
+				let cameraMove = cameraDelta.clone();
+				cameraMove.applyAxisAngle(new THREE.Vector3(0,0,1), yawMove);
+				let totalMove = new THREE.Vector3().subVectors(cameraMove,cameraDelta);
+				console.log("camera Delta ");
+				console.log(cameraDelta);
+				console.log("camera Move ");
+				console.log(cameraMove);
+				console.log("total move ");
+				console.log(totalMove);
+				console.log("yaw ");
+				console.log(yawMove);
+				let newPos = new  THREE.Vector3().addVectors(cameraPos,totalMove)
+				view.position.copy(newPos);				
+				
+				// newPos.setZ(position.z)
+				// var geometry = new THREE.SphereGeometry( 20, 32, 32 );
+				// var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+				// var sphere = new THREE.Mesh( geometry, material );
+				// sphere.position.copy(newPos);
+				// this.scene.scene.add(sphere);
+				
+			} 
 		}
 
 		this.panDelta.x = +(this.panDelta.x).toFixed(5);
