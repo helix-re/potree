@@ -663,6 +663,11 @@ Potree.updateVisibility = function(pointclouds, camera, renderer){
 		}
 
 		if (node.isTreeNode()) {
+			if (!Potree.initialLoadFinished) {
+				Potree.initialLoadFinished = true;
+				pointcloud.dispatchEvent({ type: 'pointcloud_ready' });
+			}
+
 			Potree.getLRU().touch(node.geometryNode);
 			node.sceneNode.visible = true;
 			node.sceneNode.material = pointcloud.material;
