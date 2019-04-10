@@ -182,8 +182,8 @@ Potree.RotationControls = class RotationControls extends THREE.EventDispatcher{
 
 		const toFixed = value => +value.toFixed(3);
 
-		const fixedRadiusDelta = toFixed(this.radiusDelta); // +(this.radiusDelta).toFixed(3);
-		const fixedYawDelta = toFixed(this.yawDelta); //+(this.yawDelta).toFixed(3);
+		const fixedRadiusDelta = toFixed(this.radiusDelta);
+		const fixedYawDelta = toFixed(this.yawDelta);
 		const fixedPanDelta = new THREE.Vector3(toFixed(this.panDelta.x), toFixed(this.panDelta.y));
 		if (fixedRadiusDelta !== 0) {
 			this.panDelta.set(0, 0);
