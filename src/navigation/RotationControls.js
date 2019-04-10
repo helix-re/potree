@@ -160,6 +160,13 @@ Potree.RotationControls = class RotationControls extends THREE.EventDispatcher{
 		const yawMove = view.yaw - yaw;
 		this.pivot = this.scene.pointclouds[0].boundingBox.getCenter();
 
+		if (yaw < -Math.PI) {
+			yaw += 2 * Math.PI;
+		} else
+		if (yaw > Math.PI) {
+			yaw -= 2 * Math.PI;
+		}
+		
 		view.yaw = yaw;
 
 		let pivotToCam = new THREE.Vector3().subVectors(view.position, this.pivot);
