@@ -75,48 +75,6 @@ let shaders = [
 	'src/materials/shaders/pointcloud.gl2.fs',
 ];
 
-// gulp.task('workers', function(){
-
-// 	for(let workerName of Object.keys(workers)){
-
-// 		gulp.src(workers[workerName])
-// 			.pipe(concat(`${workerName}.js`))
-// 			.pipe(gulp.dest('build/potree/workers'));
-
-// 	}
-
-// });
-
-// gulp.task('shaders', () => gulp.src(shaders)
-// 	.pipe(encodeShader('shaders.js', 'Potree.Shader'))
-// 	.pipe(gulp.dest('build/shaders')));
-
-// gulp.task("build", ['workers', 'shaders', 'icons_viewer', 'examples_page'], function(){
-// 	gulp.src(paths.html)
-// 		.pipe(gulp.dest('build/potree'));
-
-// 	gulp.src(paths.resources)
-// 		.pipe(gulp.dest('build/potree/resources'));
-
-// 	gulp.src(['LICENSE'])
-// 		.pipe(gulp.dest('build/potree'));
-// });
-
-// gulp.task('develop', ['scripts'], () => {
-// 	gulp.src(paths.potree)
-// 		.pipe(concat('potree.js'))
-// 		.pipe(removeCode({ development: true }))
-// 		.pipe(gulp.dest('build/potree'));
-// });
-
-// gulp.task('build', ['scripts'], () => {
-// 	gulp.src(paths.potree)
-// 		.pipe(concat('potree.js'))
-// 		.pipe(removeCode({ development: false }))
-// 		.pipe(uglify())
-// 		.pipe(gulp.dest('build/potree'));
-// });
-
 // For development, it is now possible to use 'gulp webserver'
 // from the command line to start the server (default port is 8080)
 gulp.task('webserver', gulp.series(async function() {
@@ -402,56 +360,11 @@ gulp.task('icons_viewer', async function(done) {
 	});
 
 	done();
+
 });
 
-// gulp.task('watch', ['build', 'webserver'], function() {
-// 	// gulp.run('develop');
-// 	//gulp.run("build");
-
-// 	exec('rollup -c', function (err, stdout, stderr) {
-// 		console.log(stdout);
-// 		console.log(stderr);
-// 	});
-
-// 	//gulp.run("webserver");
-
-// 	let watchlist = [
-// 		'src/**/*.js',
-// 		'src/**/*.css',
-// 		'src/**/*.html',
-// 		'src/**/*.vs',
-// 		'src/**/*.fs',
-// 		'resources/**/*',
-// 		'examples//**/*.json',
-// 	];
-
-// 	let blacklist = [
-// 		'resources/icons/index.html',
-// 	];
-	
-// 	watch(watchlist, (cb) => {
-// 		// abort if blacklisted
-// 		let file = cb.path.replace(/\\/g, '/');
-// 		let isOnBlacklist = blacklist.some(blacklisted => file.indexOf(blacklisted) >= 0);
-// 		if (isOnBlacklist) {
-// 			return;
-// 		}
-
-// 		console.log('===============================');
-// 		console.log('watch event:');
-// 		console.log(cb);
-// 		gulp.run('build');
-
-// 		exec('rollup -c', function (err, stdout, stderr) {
-// 			console.log(stdout);
-// 			console.log(stderr);
-// 			//cb(err);
-// 		});
-// 	});
-// });
-
 // let encodeWorker = function(fileName, opt){
-// 	if (!fileName) throw new PluginError('gulp-concat', 'Missing fileName option for gulp-concat');
+// 	if (!fileName) throw new PluginError('gulp-concat',  'Missing fileName option for gulp-concat');
 // 	if (!opt) opt = {};
 // 	if (!opt.newLine) opt.newLine = gutil.linefeed;
 
@@ -461,6 +374,7 @@ gulp.task('icons_viewer', async function(done) {
 // 	function bufferContents(file){
 // 		if (file.isNull()) return; // ignore
 //		if (file.isStream()) return this.emit('error', new PluginError('gulp-concat', 'Streaming not supported'));
+
 // 		if (!firstFile) firstFile = file;
 
 // 		let string = file.contents.toString('utf8');
@@ -497,17 +411,6 @@ let encodeShader = function(fileName, varname, opt){
 	let buffer = [];
 	let files = [];
 	let firstFile = null;
-
-	function bufferContents(file){
-		if (file.isNull()) return; // ignore
-		if (file.isStream()) return this.emit('error', new PluginError('gulp-concat', 'Streaming not supported'));
-
-		if (!firstFile) firstFile = file;
-
-		let string = file.contents.toString('utf8');
-		buffer.push(string);
-		files.push(file);
-	}
 
 	function endStream(){
 		if (buffer.length === 0) return this.emit('end');
@@ -608,5 +511,4 @@ gulp.task('watch', gulp.parallel("build", "pack", "webserver", async function() 
 	watch(watchlist, gulp.series("build", "pack"));
 
 }));
-
 
