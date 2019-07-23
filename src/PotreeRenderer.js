@@ -663,6 +663,8 @@ export class Renderer {
 
 	renderNodes(octree, nodes, visibilityTextureData, camera, target, shader, params) {
 
+		//console.log(`renderNodes: ${nodes.length}`);
+
 		if (exports.measureTimings) performance.mark("renderNodes-start");
 
 		let gl = this.gl;

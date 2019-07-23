@@ -21,9 +21,9 @@
     "registry": "https://repo.helix.re/repository/helix-npm-host/"
   },
   "dependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
-    "gulp-connect": "^5.5.0",
+    "gulp-connect": "^5.7.0",
     "gulp-remove-code": "^3.0.4",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
