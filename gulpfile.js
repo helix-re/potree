@@ -9,7 +9,7 @@ const concat = require('gulp-concat');
 const uglifyjs = require('uglify-es');
 //const gutil = require('gulp-util');
 //const through = require('through');
-// const File = gutil.File;
+//const File = gutil.File;
 const connect = require('gulp-connect');
 const composer = require('gulp-uglify/composer');
 const removeCode = require('gulp-remove-code');
@@ -381,9 +381,28 @@ gulp.task("workers", async function(done){
 });
 
 gulp.task("shaders", async function(){
-	return gulp.src(shaders)
-		.pipe(encodeShader('shaders.js', "Potree.Shader"))
-		.pipe(gulp.dest('build/shaders'));
+
+	const components = [
+		"let Shaders = {};"
+	];
+
+	for(let file of shaders){
+		const filename = path.basename(file);
+
+		const content = await fsp.readFile(file);
+
+		const prep = `Shaders["${filename}"] = \`${content}\``;
+
+		components.push(prep);
+	}
+
+	components.push("export {Shaders};");
+
+	const content = components.join("\n\n");
+
+	const targetPath = `./build/shaders/shaders.js`;
+
+	fs.writeFileSync(targetPath, content);
 });
 
 gulp.task('build', 
