@@ -18,8 +18,12 @@ libs/CesiumUnminified
 /pointclouds/wrneustadt
 /pointclouds/alszeile
 /pointclouds/heidentor
+/pointclouds/gane
 /examples/page.html
 /resources/icons/index.html
 /examples/page.html
 /pointclouds/ept
 pointclouds/C
+pointclouds
+pointclouds/gane/data/r/r.bin
+pointclouds/gane/data/r/r.hrc
