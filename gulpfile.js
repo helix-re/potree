@@ -421,6 +421,7 @@ gulp.task('watch', gulp.parallel("build", "pack", "webserver", async function() 
 
 	let watchlist = [
 		'src/**/*.js',
+		'src/**/**/*.js',
 		'src/**/*.css',
 		'src/**/*.html',
 		'src/**/*.vs',
