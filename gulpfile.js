@@ -2,18 +2,13 @@ const path = require('path');
 const gulp = require('gulp');
 const exec = require('child_process').exec;
 
-
 const fs = require('fs');
 const fsp = fs.promises;
 const concat = require('gulp-concat');
 const uglifyjs = require('uglify-es');
-//const gutil = require('gulp-util');
-//const through = require('through');
-//const File = gutil.File;
 const connect = require('gulp-connect');
 const composer = require('gulp-uglify/composer');
 const removeCode = require('gulp-remove-code');
-//const watch = require('glob-watcher');
 const {watch} = gulp;
 
 const uglify = composer(uglifyjs, console);
@@ -49,14 +44,6 @@ let workers = {
 	],
 	EptZstandardDecoderWorker: [
 		'src/workers/EptZstandardDecoderWorker.js',
-	],
-	GreyhoundBinaryDecoderWorker: [
-		'libs/plasio/workers/laz-perf.js',
-		'src/workers/GreyhoundBinaryDecoderWorker.js',
-		'src/Version.js',
-		'src/loader/PointAttributes.js',
-		'src/InterleavedBuffer.js',
-		'src/utils/toInterleavedBufferAttribute.js',
 	],
 };
 
