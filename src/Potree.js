@@ -115,6 +115,8 @@ if (document.currentScript.src) {
 
 let resourcePath = scriptPath + '/resources';
 
+// scriptPath: build/potree
+// resourcePath:build/potree/resources
 export {scriptPath, resourcePath};
 
 
