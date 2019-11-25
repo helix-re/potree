@@ -863,3 +863,7 @@ Potree.XHRFactory = {
 		}
 	});
 })(jQuery);
+
+//removeIf(development)
+export default Potree;
+//endRemoveIf(development)

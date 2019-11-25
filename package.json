@@ -7,9 +7,17 @@
     "build": "gulp build",
     "lint": "eslint src",
     "prepublishOnly": "npm run build",
-    "test": "npm run lint",
-    "watch": "gulp watch"
+    "start": "gulp watch",
+    "test": "npm run lint"
   },
+  "main": "build/potree/potree.js",
+  "files": [
+    "build",
+    "libs",
+    "package-lock.json",
+    "package.json",
+    "README.md"
+  ],
   "publishConfig": {
     "registry": "https://repo.helix.re/repository/helix-npm-host/"
   },
@@ -24,6 +32,7 @@
     "gulp-concat": "~2.1.7",
     "gulp-connect": "^2.3.1",
     "gulp-jshint": "^2.1.0",
+    "gulp-remove-code": "^3.0.4",
     "gulp-rename": "~1.0.0",
     "gulp-size": "^2.1.0",
     "gulp-uglify": "~0.2.1",

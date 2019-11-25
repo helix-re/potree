@@ -8,6 +8,7 @@ const size = require('gulp-size');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
 const gutil = require('gulp-util');
+const removeCode = require('gulp-remove-code');
 const through = require('through');
 const os = require('os');
 const File = gutil.File;
@@ -163,17 +164,11 @@ gulp.task("workers", function(){
 
 });
 
-gulp.task("shaders", function(){
-	return gulp.src(shaders)
-		.pipe(encodeShader('shaders.js', "Potree.Shader"))
-		.pipe(gulp.dest('build/shaders'));
-});
+gulp.task('shaders', () => gulp.src(shaders)
+	.pipe(encodeShader('shaders.js', "Potree.Shader"))
+	.pipe(gulp.dest('build/shaders')));
 
-gulp.task("scripts", ['workers','shaders', "icons_viewer", "examples_page"], function(){
-	gulp.src(paths.potree)
-		.pipe(concat('potree.js'))
-		.pipe(gulp.dest('build/potree'));
-
+gulp.task('scripts', ['workers', 'shaders', "icons_viewer", "examples_page"], () => {
 	gulp.src(paths.laslaz)
 		.pipe(concat('laslaz.js'))
 		.pipe(gulp.dest('build/potree'));
@@ -186,11 +181,21 @@ gulp.task("scripts", ['workers','shaders', "icons_viewer", "examples_page"], fun
 
 	gulp.src(["LICENSE"])
 		.pipe(gulp.dest('build/potree'));
-
-	return;
 });
 
-gulp.task('build', ['scripts']);
+gulp.task('develop', ['scripts'], () => {
+	gulp.src(paths.potree)
+		.pipe(concat('potree.js'))
+		.pipe(removeCode({ development: true }))
+		.pipe(gulp.dest('build/potree'));
+});
+
+gulp.task('build', ['scripts'], () => {
+	gulp.src(paths.potree)
+		.pipe(concat('potree.js'))
+		.pipe(removeCode({ development: false }))
+		.pipe(gulp.dest('build/potree'));
+});
 
 // For development, it is now possible to use 'gulp webserver'
 // from the command line to start the server (default port is 8080)
@@ -480,7 +485,7 @@ gulp.task('icons_viewer', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.run("build");
+	gulp.run("develop");
 	gulp.run("webserver");
 
 	let watchlist = [
