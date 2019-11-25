@@ -8,8 +8,6 @@ Potree.version = {
 	suffix: ''
 };
 
-console.log('Potree ' + Potree.version.major + '.' + Potree.version.minor + Potree.version.suffix);
-
 Potree.pointBudget = 1 * 1000 * 1000;
 
 Potree.framenumber = 0;
@@ -36,6 +34,9 @@ if (document.currentScript.src) {
 } else {
 	console.error('Potree was unable to find its script path using document.currentScript. Is Potree included with a script tag? Does your browser support this function?');
 }
+//removeIf(development)
+Potree.scriptPath = '/pointcloud-viewer/libs/potree/';
+//endRemoveIf(development)
 
 Potree.resourcePath = Potree.scriptPath + '/resources';
 
@@ -327,8 +328,7 @@ Potree.loadPointCloud = function (path, name, callback) {
 		// We check if the path string starts with 'greyhound:', if so we assume it's a greyhound server URL.
 		Potree.GreyhoundLoader.load(path, function (geometry) {
 			if (!geometry) {
-				//callback({type: 'loading_failed'});
-				console.error(new Error(`failed to load point cloud from URL: ${path}`));
+				callback({ type: 'loading_failed' });
 			} else {
 				let pointcloud = new Potree.PointCloudOctree(geometry);
 				loaded(pointcloud);
@@ -337,8 +337,7 @@ Potree.loadPointCloud = function (path, name, callback) {
 	} else if (path.indexOf('cloud.js') > 0) {
 		Potree.POCLoader.load(path, function (geometry) {
 			if (!geometry) {
-				//callback({type: 'loading_failed'});
-				console.error(new Error(`failed to load point cloud from URL: ${path}`));
+				callback({ type: 'loading_failed' });
 			} else {
 				let pointcloud = new Potree.PointCloudOctree(geometry);
 				loaded(pointcloud);
@@ -347,16 +346,14 @@ Potree.loadPointCloud = function (path, name, callback) {
 	} else if (path.indexOf('.vpc') > 0) {
 		Potree.PointCloudArena4DGeometry.load(path, function (geometry) {
 			if (!geometry) {
-				//callback({type: 'loading_failed'});
-				console.error(new Error(`failed to load point cloud from URL: ${path}`));
+				callback({ type: 'loading_failed' });
 			} else {
 				let pointcloud = new Potree.PointCloudArena4D(geometry);
 				loaded(pointcloud);
 			}
 		});
 	} else {
-		//callback({'type': 'loading_failed'});
-		console.error(new Error(`failed to load point cloud from URL: ${path}`));
+		callback({ 'type': 'loading_failed' });
 	}
 };
 /* eslint-enable standard/no-callback-literal */
@@ -558,7 +555,7 @@ Potree.updateVisibility = function(pointclouds, camera, renderer){
 
 
 		if(!window.warned125){
-			console.log("TODO");
+			// TODO
 			window.warned125 = true;
 		}
 		if(false && pointcloud.material.clipBoxes.length > 0){
@@ -787,7 +784,20 @@ Potree.XHRFactory = {
 	}
 };
 
+Potree.getSignatureKeyForPath = (path) => {
+	if (!Potree.signedUrls) {
+		return '';
+	}
 
+	let key;
+	for (let e in Potree.signedUrls.urls) {
+		if (e.indexOf(path) >= 0) {
+			key = Potree.signedUrls.urls[e];
+		}
+	}
+
+	return `?Expires=${Potree.signedUrls.expires}&KeyName=${Potree.signedUrls.keyname}&Signature=${key}`;
+};
 
 (function($){
 	$.fn.extend({
