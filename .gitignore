@@ -1,5 +1,5 @@
-build/
-test/
+/build
+/test
 .DS_Store
 .vscode
 node_modules
