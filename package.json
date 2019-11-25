@@ -4,8 +4,14 @@
   "version": "0.0.1",
   "description": "WebGL point cloud viewer",
   "scripts": {
+    "build": "gulp build",
     "lint": "eslint src",
-    "test": "npm run lint"
+    "prepublishOnly": "npm run build",
+    "test": "npm run lint",
+    "watch": "gulp watch"
+  },
+  "publishConfig": {
+    "registry": "https://repo.helix.re/repository/helix-npm-host/"
   },
   "dependencies": {
     "eslint": "^4.18.2",
