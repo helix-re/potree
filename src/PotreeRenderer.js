@@ -421,7 +421,9 @@ Potree.WebGLTexture = class WebGLTexture {
 		gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
 		gl.pixelStorei(gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
 
-		if (texture instanceof THREE.DataTexture) {
+		// HELIX RE
+		if (THREE.CanvasTexture && texture instanceof THREE.DataTexture) {
+		// end HELIX RE
 			data = texture.image.data;
 
 			gl.texParameteri(this.target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -433,7 +435,9 @@ Potree.WebGLTexture = class WebGLTexture {
 			gl.texImage2D(this.target, level, internalFormat,
 				width, height, border, srcFormat, srcType,
 				data);
-		} else if (texture instanceof THREE.CanvasTexture) {
+		// HELIX RE
+		} else if (THREE.CanvasTexture && texture instanceof THREE.CanvasTexture) {
+		// end HELIX RE
 			data = texture.image;
 
 			gl.texParameteri(this.target, gl.TEXTURE_WRAP_S, Potree.paramThreeToGL(gl, texture.wrapS));

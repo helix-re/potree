@@ -1,7 +1,6 @@
 {
   "name": "potree",
-  "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "WebGL point cloud viewer",
   "scripts": {
     "build": "gulp build",
@@ -35,10 +34,11 @@
     "gulp-remove-code": "^3.0.4",
     "gulp-rename": "~1.0.0",
     "gulp-size": "^2.1.0",
-    "gulp-uglify": "~0.2.1",
+    "gulp-uglify": "^3.0.2",
     "gulp-util": "~2.2.20",
     "jshint": "^2.9.5",
-    "through": "~2.3.4"
+    "through": "~2.3.4",
+    "uglify-es": "^3.3.9"
   },
   "author": "Markus Schütz",
   "license": "BSD-2-CLAUSE"

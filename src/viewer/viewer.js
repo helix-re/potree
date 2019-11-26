@@ -1569,9 +1569,12 @@ Potree.Viewer = class PotreeViewer extends THREE.EventDispatcher{
 			performance.mark("loop-start");
 		}
 
-		this.update(this.clock.getDelta(), timestamp);
-
-		this.render();
+		// HELIX RE
+		if (window.THREE && window.THREE.REVISION === '85') {
+			this.update(this.clock.getDelta(), timestamp);
+			this.render();
+		}
+		// end HELIX RE
 
 		if(Potree.measureTimings){
 			performance.mark("loop-end");
