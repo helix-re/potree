@@ -18,14 +18,20 @@ Potree.BinaryLoader = class BinaryLoader{
 		}
 
 		let url = node.getURL();
+		// HELIX RE
 		let path = node.getHierarchyPath() + '/' + node.name;
+		// end HELIX RE
 
 		if (this.version.equalOrHigher('1.4')) {
 			url += '.bin';
+			// HELIX RE
 			path += '.bin';
+			// end HELIX RE
 		}
 
+		// HELIX RE
 		url += Potree.getSignatureKeyForPath(path);
+		// end HELIX RE
 
 		let xhr = Potree.XHRFactory.createXMLHttpRequest();
 		xhr.open('GET', url, true);

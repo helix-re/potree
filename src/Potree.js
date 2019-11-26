@@ -34,9 +34,11 @@ if (document.currentScript.src) {
 } else {
 	console.error('Potree was unable to find its script path using document.currentScript. Is Potree included with a script tag? Does your browser support this function?');
 }
+// HELIX RE
 //removeIf(development)
 Potree.scriptPath = '/pointcloud-viewer/libs/potree/';
 //endRemoveIf(development)
+// end HELIX RE
 
 Potree.resourcePath = Potree.scriptPath + '/resources';
 
@@ -784,6 +786,7 @@ Potree.XHRFactory = {
 	}
 };
 
+// HELIX RE
 Potree.getSignatureKeyForPath = (path) => {
 	if (!Potree.signedUrls) {
 		return '';
@@ -798,6 +801,7 @@ Potree.getSignatureKeyForPath = (path) => {
 
 	return `?Expires=${Potree.signedUrls.expires}&KeyName=${Potree.signedUrls.keyname}&Signature=${key}`;
 };
+// end HELIX RE
 
 (function($){
 	$.fn.extend({
@@ -874,6 +878,8 @@ Potree.getSignatureKeyForPath = (path) => {
 	});
 })(jQuery);
 
+// HELIX RE
 //removeIf(development)
 export default Potree;
 //endRemoveIf(development)
+// end HELIX RE

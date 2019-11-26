@@ -198,8 +198,10 @@ Potree.PointCloudOctreeGeometryNode = class PointCloudOctreeGeometryNode extends
 			node.loadPoints();
 		};
 		if ((node.level % node.pcoGeometry.hierarchyStepSize) === 0) {
+			// HELIX RE
 			const nodePath = node.getHierarchyPath() + '/' + node.name + '.hrc';
 			let hurl = node.pcoGeometry.octreeDir + '/' + nodePath + Potree.getSignatureKeyForPath(nodePath);
+			// end HELIX RE
 
 			let xhr = Potree.XHRFactory.createXMLHttpRequest();
 			xhr.open('GET', hurl, true);
