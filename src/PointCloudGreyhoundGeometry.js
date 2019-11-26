@@ -1,4 +1,4 @@
-
+import {PointCloudTreeNode} from "./PointCloudTree.js";
 
 export class PointCloudGreyhoundGeometry{
 
