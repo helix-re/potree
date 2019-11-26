@@ -268,17 +268,20 @@ gulp.task('scripts', ['workers', 'shaders', 'icons_viewer', 'examples_page'], ()
 		.pipe(gulp.dest('build/potree'));
 });
 
-const createBuildScript = (development) => {
+gulp.task('develop', ['scripts'], () => {
 	gulp.src(paths.potree)
 		.pipe(concat('potree.js'))
-		.pipe(removeCode({ development }))
+		.pipe(removeCode({ development: true }))
+		.pipe(gulp.dest('build/potree'));
+});
+
+gulp.task('build', ['scripts'], () => {
+	gulp.src(paths.potree)
+		.pipe(concat('potree.js'))
+		.pipe(removeCode({ development: false }))
 		.pipe(uglify())
 		.pipe(gulp.dest('build/potree'));
-};
-
-gulp.task('develop', ['scripts'], () => createBuildScript(true));
-
-gulp.task('build', ['scripts'], () => createBuildScript(false));
+});
 
 // For development, it is now possible to use 'gulp webserver'
 // from the command line to start the server (default port is 8080)
