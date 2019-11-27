@@ -31,7 +31,7 @@ var findDim = function(schema, name) {
     return dim;
 }
 
-Potree.PointCloudEptGeometry = class {
+export class PointCloudEptGeometry {
 	constructor(url, info) {
 		let version = info.version;
 		let schema = info.schema;
@@ -114,7 +114,7 @@ Potree.PointCloudEptGeometry = class {
 	}
 };
 
-Potree.EptKey = class {
+export class EptKey {
 	constructor(ept, b, d, x, y, z) {
 		this.ept = ept;
 		this.b = b;
@@ -165,7 +165,7 @@ Potree.EptKey = class {
 	}
 }
 
-Potree.PointCloudEptGeometryNode = class extends PointCloudTreeNode {
+export class PointCloudEptGeometryNode extends PointCloudTreeNode {
 	constructor(ept, b, d, x, y, z) {
 		super();
 
@@ -340,8 +340,3 @@ Potree.PointCloudEptGeometryNode = class extends PointCloudTreeNode {
 }
 
 Potree.PointCloudEptGeometryNode.NextId = 0;
-
-Object.assign(
-		Potree.PointCloudEptGeometryNode.prototype,
-		THREE.EventDispatcher.prototype);
-
