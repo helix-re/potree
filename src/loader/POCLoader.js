@@ -115,8 +115,10 @@ export class POCLoader {
 					if (fMno.octreeDir.indexOf('http') === 0) {
 						pco.octreeDir = fMno.octreeDir;
 					// HELIX RE
-					} else if (url.indexOf('cloud.js') >= 0 && Potree.signedUrls) {
-						pco.octreeDir = url.split('/').slice(0, -1).join('/') + '/' + fMno.octreeDir;
+					// TODO: Maybe this can be removed. If not, pass signedUrls
+					// to Potree again...
+					// } else if (url.indexOf('cloud.js') >= 0 && Potree.signedUrls) {
+						// pco.octreeDir = url.split('/').slice(0, -1).join('/') + '/' + fMno.octreeDir;
 					// end HELIX RE
 					} else {
 						pco.octreeDir = url + '/../' + fMno.octreeDir;

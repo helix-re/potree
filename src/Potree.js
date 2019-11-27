@@ -91,8 +91,6 @@ export const version = {
 
 export let lru = new LRU();
 
-console.log('Potree ' + version.major + '.' + version.minor + version.suffix);
-
 export let pointBudget = 1 * 1000 * 1000;
 export let framenumber = 0;
 export let numNodesLoading = 0;
@@ -128,7 +126,7 @@ export function loadPointCloud(path, name, callback){
 
 	let loaded = function(pointcloud){
 		pointcloud.name = name;
-		callback({type: 'pointcloud_loaded', pointcloud: pointcloud});
+		callback({type: 'pointcloud_loaded', pointcloud: pointcloud, pointclouds: [pointcloud] });
 	};
 
 	// load pointcloud
@@ -243,20 +241,3 @@ export function loadPointCloud(path, name, callback){
 		}
 	});
 })(jQuery);
-
-// HELIX RE
-export function getSignatureKeyForPath(path) {
-	if (!Potree.signedUrls) {
-		return '';
-	}
-
-	let key;
-	for (let e in Potree.signedUrls.urls) {
-		if (e.indexOf(path) >= 0) {
-			key = Potree.signedUrls.urls[e];
-		}
-	}
-
-	return `?Expires=${Potree.signedUrls.expires}&KeyName=${Potree.signedUrls.keyname}&Signature=${key}`;
-}
-// end HELIX RE

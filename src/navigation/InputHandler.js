@@ -10,12 +10,20 @@ import {Utils} from "../utils";
 import {EventDispatcher} from "../EventDispatcher.js";
 
 export class InputHandler extends EventDispatcher {
-	constructor (viewer) {
+	// HELIX RE (last argument)
+	constructor (viewer, renderer) {
+	// end HELIX RE
 		super();
 
 		this.viewer = viewer;
-		this.renderer = viewer.renderer;
-		this.domElement = this.renderer.domElement;
+		// HELIX RE
+		if (renderer) {
+			this.domElement = renderer.domElement;
+		} else {
+			this.renderer = viewer.renderer;
+			this.domElement = this.renderer.domElement;
+		}
+		// end HELIX RE
 		this.enabled = true;
 		
 		this.scene = null;
@@ -58,10 +66,22 @@ export class InputHandler extends EventDispatcher {
 	}
 
 	addInputListener (listener) {
+		// HELIX RE
+		if (Array.isArray(listener)) {
+			this.inputListeners.push(...listener);
+			return;
+		}
+		// end HELIX RE
 		this.inputListeners.push(listener);
 	}
 
 	removeInputListener (listener) {
+		// HELIX RE
+		if (Array.isArray(listener)) {
+			this.inputListeners = this.inputListeners.filter(e => !listener.includes(e));
+			return;
+		}
+		// end HELIX RE
 		this.inputListeners = this.inputListeners.filter(e => e !== listener);
 	}
 

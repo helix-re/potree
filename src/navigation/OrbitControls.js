@@ -21,11 +21,17 @@ import {EventDispatcher} from "../EventDispatcher.js";
  
 export class OrbitControls extends EventDispatcher{
 	
-	constructor(viewer){
+	// HELIX RE (last argument)
+	constructor(viewer, index){
+	// end HELIX RE
 		super();
 		
 		this.viewer = viewer;
-		this.renderer = viewer.renderer;
+		// HELIX RE
+		// this.renderer = viewer.renderer;
+		this.index = index;
+		this.renderer = viewer.renderers[index];
+		// end HELIX RE
 
 		this.scene = null;
 		this.sceneControls = new THREE.Scene();
@@ -74,7 +80,10 @@ export class OrbitControls extends EventDispatcher{
 		};
 
 		let scroll = (e) => {
-			let resolvedRadius = this.scene.view.radius + this.radiusDelta;
+			// HELIX RE
+			// let resolvedRadius = this.scene.view.radius + this.radiusDelta;
+			let resolvedRadius = this.scene.views[index].radius + this.radiusDelta;
+			// end HELIX RE
 
 			this.radiusDelta += -e.delta * resolvedRadius * 0.1;
 
@@ -108,7 +117,10 @@ export class OrbitControls extends EventDispatcher{
 				let currDist = Math.sqrt(currDX * currDX + currDY * currDY);
 
 				let delta = currDist / prevDist;
-				let resolvedRadius = this.scene.view.radius + this.radiusDelta;
+				// HELIX RE
+				// let resolvedRadius = this.scene.view.radius + this.radiusDelta;
+				let resolvedRadius = this.scene.views[index].radius + this.radiusDelta;
+				// end HELIX RE
 				let newRadius = resolvedRadius / delta;
 				this.radiusDelta = newRadius - resolvedRadius;
 
@@ -181,11 +193,17 @@ export class OrbitControls extends EventDispatcher{
 			let nodes = I.pointcloud.nodesOnRay(I.pointcloud.visibleNodes, ray);
 			let lastNode = nodes[nodes.length - 1];
 			let radius = lastNode.getBoundingSphere(new THREE.Sphere()).radius;
-			targetRadius = Math.min(this.scene.view.radius, radius);
+			// HELIX RE
+			// targetRadius = Math.min(this.scene.view.radius, radius);
+			targetRadius = Math.min(this.scene.views[this.index].radius, radius);
+			// end HELIX RE
 			targetRadius = Math.max(minimumJumpDistance, targetRadius);
 		}
 
-		let d = this.scene.view.direction.multiplyScalar(-1);
+		// HELIX RE
+		// let d = this.scene.view.direction.multiplyScalar(-1);
+		let d = this.scene.views[this.index].direction.multiplyScalar(-1);
+		// end HELIX RE
 		let cameraTargetPosition = new THREE.Vector3().addVectors(I.location, d.multiplyScalar(targetRadius));
 		// TODO Unused: let controlsTargetPosition = I.location;
 
@@ -198,19 +216,28 @@ export class OrbitControls extends EventDispatcher{
 			tween.easing(easing);
 			this.tweens.push(tween);
 
-			let startPos = this.scene.view.position.clone();
+			// HELIX RE
+			// let startPos = this.scene.view.position.clone();
+			let startPos = this.scene.views[this.index].position.clone();
+			// end HELIX RE
 			let targetPos = cameraTargetPosition.clone();
-			let startRadius = this.scene.view.radius;
+			// HELIX RE
+			// let startRadius = this.scene.view.radius;
+			let startRadius = this.scene.views[this.index].radius;
+			// end HELIX RE
 			let targetRadius = cameraTargetPosition.distanceTo(I.location);
 
 			tween.onUpdate(() => {
 				let t = value.x;
-				this.scene.view.position.x = (1 - t) * startPos.x + t * targetPos.x;
-				this.scene.view.position.y = (1 - t) * startPos.y + t * targetPos.y;
-				this.scene.view.position.z = (1 - t) * startPos.z + t * targetPos.z;
-
-				this.scene.view.radius = (1 - t) * startRadius + t * targetRadius;
-				this.viewer.setMoveSpeed(this.scene.view.radius / 2.5);
+				// HELIX RE
+				const view = this.scene.views[this.index];
+				view.position.x = (1 - t) * startPos.x + t * targetPos.x;
+				view.position.y = (1 - t) * startPos.y + t * targetPos.y;
+				view.position.z = (1 - t) * startPos.z + t * targetPos.z;
+				
+				view.radius = (1 - t) * startRadius + t * targetRadius;
+				this.viewer.setMoveSpeed(view.radius / 2.5);
+				// end HELIX RE
 			});
 
 			tween.onComplete(() => {
@@ -227,14 +254,25 @@ export class OrbitControls extends EventDispatcher{
 	}
 
 	update (delta) {
-		let view = this.scene.view;
+		// HELIX RE
+		// let view = this.scene.view;
+		let view = this.scene.views[this.index] || this.scene.view;
+		// end HELIX RE
 
 		{ // apply rotation
 			let progression = Math.min(1, this.fadeFactor * delta);
 
+			// HELIX RE
+			// Find a volume that has clip setting
+			const cropVolume = this.scene.volumes.find(volume => volume.clip);
+			// Set the pivot point in the center of the point cloud or cropping volume
+			const pivot = cropVolume
+				? cropVolume.position.clone()
+				: view.getPivot();
+			// let pivot = view.getPivot();
+			// end HELIX RE
 			let yaw = view.yaw;
 			let pitch = view.pitch;
-			let pivot = view.getPivot();
 
 			yaw -= progression * this.yawDelta;
 			pitch -= progression * this.pitchDelta;

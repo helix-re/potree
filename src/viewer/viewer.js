@@ -38,6 +38,15 @@ export class Viewer extends EventDispatcher{
 		super();
 
 		this.renderArea = domElement;
+
+		// HELIX RE
+		this.renderAreas = [domElement];
+		if (Array.isArray(domElement) && domElement.length) {
+			this.renderArea = domElement[0];
+			this.renderAreas = domElement;
+		}
+		// end HELIX RE
+
 		this.guiLoaded = false;
 		this.guiLoadTasks = [];
 
@@ -49,12 +58,16 @@ export class Viewer extends EventDispatcher{
 		<div id="message_listing" 
 			style="position: absolute; z-index: 1000; left: 10px; bottom: 10px">
 		</div>`);
-		$(domElement).append(this.elMessages);
+		// HELIX RE
+		$(this.renderArea).append(this.elMessages);
+		// end HELIX RE
 		
 		try{
 
 		{ // generate missing dom hierarchy
-			if ($(domElement).find('#potree_map').length === 0) {
+			// HELIX RE
+			if ($(this.renderArea).find('#potree_map').length === 0) {
+			// end HELIX RE
 				let potreeMap = $(`
 					<div id="potree_map" class="mapBox" style="position: absolute; left: 50px; top: 50px; width: 400px; height: 400px; display: none">
 						<div id="potree_map_header" style="position: absolute; width: 100%; height: 25px; top: 0px; background-color: rgba(0,0,0,0.5); z-index: 1000; border-top-left-radius: 3px; border-top-right-radius: 3px;">
@@ -62,19 +75,29 @@ export class Viewer extends EventDispatcher{
 						<div id="potree_map_content" class="map" style="position: absolute; z-index: 100; top: 25px; width: 100%; height: calc(100% - 25px); border: 2px solid rgba(0,0,0,0.5); box-sizing: border-box;"></div>
 					</div>
 				`);
-				$(domElement).append(potreeMap);
+				// HELIX RE
+				$(this.renderArea).append(potreeMap);
+				// end HELIX RE
 			}
 
-			if ($(domElement).find('#potree_description').length === 0) {
+			// HELIX RE
+			if ($(this.renderArea).find('#potree_description').length === 0) {
+			// end HELIX RE
 				let potreeDescription = $(`<div id="potree_description" class="potree_info_text"></div>`);
-				$(domElement).append(potreeDescription);
+				// HELIX RE
+				$(this.renderArea).append(potreeDescription);
+				// end HELIX RE
 			}
 
-			if ($(domElement).find('#potree_annotations').length === 0) {
+			// HELIX RE
+			if ($(this.renderArea).find('#potree_annotations').length === 0) {
+			// end HELIX RE
 				let potreeAnnotationContainer = $(`
 					<div id="potree_annotation_container" 
 						style="position: absolute; z-index: 100000; width: 100%; height: 100%; pointer-events: none;"></div>`);
-				$(domElement).append(potreeAnnotationContainer);
+				// HELIX RE
+				$(this.renderArea).append(potreeAnnotationContainer);
+				// end HELIX RE
 			}
 		}
 
@@ -120,6 +143,10 @@ export class Viewer extends EventDispatcher{
 		this.edlRenderer = null;
 		this.renderer = null;
 		this.pRenderer = null;
+		// HELIX RE
+		this.pRenderer2 = null;
+		this.pRenderers = [];
+		// end HELIX RE
 
 		this.scene = null;
 		this.overlay = null;
@@ -169,6 +196,10 @@ export class Viewer extends EventDispatcher{
 		}
 		
 		this.pRenderer = new Renderer(this.renderer);
+		// HELIX RE
+		this.pRenderer2 = new Renderer(this.renderer);
+		this.pRenderers = [this.pRenderer, this.pRenderer2];
+		// end HELIX RE
 		
 		{
 			let near = 2.5;
@@ -181,7 +212,9 @@ export class Viewer extends EventDispatcher{
 		}
 		
 
-		let scene = new Scene(this.renderer);
+		// HELIX RE
+		let scene = new Scene(this.renderers);
+		// end HELIX RE
 		this.setScene(scene);
 
 		{
@@ -709,7 +742,9 @@ export class Viewer extends EventDispatcher{
 		this.dispatchEvent({ 'type': 'length_unit_changed', 'viewer': this, value: lengthUnitValue });
 	};
 
-	zoomTo(node, factor, animationDuration = 0){
+	// HELIX RE (last argument)
+	zoomTo(node, factor, animationDuration = 0, onComplete){
+	// end HELIX RE
 		let view = this.scene.view;
 
 		let camera = this.scene.cameraP.clone();
@@ -762,6 +797,12 @@ export class Viewer extends EventDispatcher{
 			tween.onComplete(() => {
 				view.lookAt(target);
 				this.dispatchEvent({type: 'focusing_finished', target: this});
+
+				// HELIX RE
+				if (onComplete) {
+					setTimeout(onComplete, 0);
+				}
+				// end HELIX RE
 			});
 
 			this.dispatchEvent({type: 'focusing_started', target: this});
@@ -809,13 +850,25 @@ export class Viewer extends EventDispatcher{
 		return range;
 	}
 
-	fitToScreen (factor = 1, animationDuration = 0) {
+	// HELIX RE (last argument)
+	fitToScreen (factor = 1, animationDuration = 0, callback) {
+		// When browser tab is in the background, controls are not set
+		// before the first fitToScreen call.
+		if (!this.controls) {
+			setTimeout(() => {
+				this.fitToScreen(factor, animationDuration, callback);
+			}, 200);
+			return;
+		}
+	// end HELIX RE
 		let box = this.getBoundingBox(this.scene.pointclouds);
 
 		let node = new THREE.Object3D();
 		node.boundingBox = box;
 
-		this.zoomTo(node, factor, animationDuration);
+		// HELIX RE (last argument)
+		this.zoomTo(node, factor, animationDuration, callback);
+		// end HELIX RE
 		this.controls.stop();
 	};
 
@@ -1262,12 +1315,27 @@ export class Viewer extends EventDispatcher{
 		$("body")[0].addEventListener("drop", dropHandler);
 	}
 
+	// HELIX RE
 	initThree () {
+		// TODO:
+		this.renderers = [];
+		this.createRenderer(this.renderArea, 0);
+		// TODO:
+		if (this.renderAreas[1]) {
+			this.createRenderer(this.renderAreas[1], 1);
+		}
+		this.renderer = this.renderers[0];
+	}
+	// end HELIX RE
 
-		console.log(`initializing three.js ${THREE.REVISION}`);
+	createRenderer(domElement, index) {
 
-		let width = this.renderArea.clientWidth;
-		let height = this.renderArea.clientHeight;
+		// console.log(`initializing three.js ${THREE.REVISION}`);
+
+		// HELIX RE
+		let width = domElement.clientWidth;
+		let height = domElement.clientHeight;
+		// end HELIX RE
 
 		let contextAttributes = {
 			alpha: true,
@@ -1301,7 +1369,9 @@ export class Viewer extends EventDispatcher{
 		this.renderer.sortObjects = false;
 		this.renderer.setSize(width, height);
 		this.renderer.autoClear = false;
-		this.renderArea.appendChild(this.renderer.domElement);
+		// HELIX RE
+		domElement.appendChild(this.renderer.domElement);
+		// end HELIX RE
 		this.renderer.domElement.tabIndex = '2222';
 		this.renderer.domElement.style.position = 'absolute';
 		this.renderer.domElement.addEventListener('mousedown', () => {
@@ -1326,7 +1396,8 @@ export class Viewer extends EventDispatcher{
 		//}else if(gl instanceof WebGL2RenderingContext){
 		//	gl.getExtension("EXT_color_buffer_float");
 		//}
-		
+
+		this.renderers[index] = this.renderer;
 	}
 
 	onVr(callback){
@@ -1943,6 +2014,11 @@ export class Viewer extends EventDispatcher{
 					const height = this.scaleFactor * this.renderArea.clientHeight;
 
 					this.renderer.setSize(width, height);
+					// HELIX RE
+					if (this.renderers[1]) {
+						this.renderers[1].setSize(width, height);
+					}
+					// end HELIX RE
 					const pixelRatio = this.renderer.getPixelRatio();
 					const aspect = width / height;
 

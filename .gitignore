@@ -1,7 +1,7 @@
-/build
-/test
 .DS_Store
 .vscode
+/build
+/test
 /test1
 node_modules
 docs/.marking_your_own_pointcloud_loader.md.html
@@ -13,7 +13,6 @@ docs/.how_to_create_your_own_pointcloud_loader.md.html
 examples/index.html
 .project
 libs/CesiumUnminified
-/examples/page.html
 /resources/icons/index.html
 /examples/page.html
 
