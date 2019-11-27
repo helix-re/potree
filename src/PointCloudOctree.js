@@ -148,6 +148,7 @@ export class PointCloudOctree extends PointCloudTree {
 
 		// TODO read projection from file instead
 		this.projection = geometry.projection;
+		this.fallbackProjection = geometry.fallbackProjection;
 
 		this.root = this.pcoGeometry.root;
 	}

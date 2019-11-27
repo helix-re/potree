@@ -1,3 +1,5 @@
+import {XHRFactory} from "../../XHRFactory.js";
+
 /**
  * laslaz code taken and adapted from plas.io js-laslaz
  *	  http://plas.io/

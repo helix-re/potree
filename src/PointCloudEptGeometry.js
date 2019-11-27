@@ -21,16 +21,6 @@ class U {
 	}
 };
 
-var toArray = function(b) {
-	return [b.min.x, b.min.y, b.min.z, b.max.x, b.max.y, b.max.z];
-}
-
-var findDim = function(schema, name) {
-    var dim = schema.find((dim) => dim.name == name);
-    if (!dim) throw new Error('Failed to find ' + name + ' in schema');
-    return dim;
-}
-
 export class PointCloudEptGeometry {
 	constructor(url, info) {
 		let version = info.version;
@@ -178,12 +168,12 @@ export class PointCloudEptGeometryNode extends PointCloudTreeNode {
 				y,
 				z);
 
-		this.id = Potree.PointCloudEptGeometryNode.NextId++;
+		this.id = PointCloudEptGeometryNode.NextId++;
 		this.geometry = null;
 		this.boundingBox = this.key.b;
 		this.tightBoundingBox = this.boundingBox;
 		this.spacing = this.ept.spacing / Math.pow(2, this.key.d);
-		this.boundingSphere = this.boundingBox.getBoundingSphere();
+		this.boundingSphere = U.sphereFrom(this.boundingBox);
 
 		// These are set during hierarchy loading.
 		this.hasChildren = false;
@@ -339,4 +329,4 @@ export class PointCloudEptGeometryNode extends PointCloudTreeNode {
 	}
 }
 
-Potree.PointCloudEptGeometryNode.NextId = 0;
+PointCloudEptGeometryNode.IDCount = 0;
