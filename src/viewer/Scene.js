@@ -9,7 +9,9 @@ import {EventDispatcher} from "../EventDispatcher.js";
 
 export class Scene extends EventDispatcher{
 
+	// HELIX RE (argument)
 	constructor(renderers){
+	// end HELIX RE
 		super();
 
 		this.annotations = new Annotation();
@@ -24,10 +26,10 @@ export class Scene extends EventDispatcher{
 		this.cameraBG = new THREE.Camera();
 		this.cameraScreenSpace = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
 		// HELIX RE
-		this.cameras = [{
-			perspective: this.cameraP,
-			orthographic: this.cameraO,
-		}];
+		// this.cameras = [{
+		// 	perspective: this.cameraP,
+		// 	orthographic: this.cameraO,
+		// }];
 		// end HELIX RE
 		this.cameraMode = CameraMode.PERSPECTIVE;
 		this.overrideCamera = null;
@@ -48,7 +50,7 @@ export class Scene extends EventDispatcher{
 		this.deviceControls = null;
 		this.inputHandler = null;
 		// HELIX RE
-		this.inputHandlers = [];
+		// this.inputHandlers = [];
 		// end HELIX RE
 
 		// TODO: Can be removed in the future (says Damian)
@@ -57,18 +59,18 @@ export class Scene extends EventDispatcher{
 		this.directionalLight = null;
 
 		// HELIX RE
-		if (renderers.length > 1) {
-			this.cameras.push({
-				perspective: new THREE.PerspectiveCamera(this.fov, 1, 0.1, 1000 * 1000),
-				orthographic: new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000 * 1000),
-			});
-		}
+		// if (renderers.length > 1) {
+		// 	this.cameras.push({
+		// 		perspective: new THREE.PerspectiveCamera(this.fov, 1, 0.1, 1000 * 1000),
+		// 		orthographic: new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000 * 1000),
+		// 	});
+		// }
 
-		this.views = [];
+		// this.views = [];
 
-		renderers.forEach(() => {
-			this.views.push(new View());
-		});
+		// renderers.forEach(() => {
+		// 	this.views.push(new View());
+		// });
 		// end HELIX RE
 
 		this.initialize();
@@ -338,10 +340,10 @@ export class Scene extends EventDispatcher{
 
 	// HELIX RE
 	getActiveCamera(index) {
-		if (index !== undefined) {
-			const cameraMode = Potree.CameraMode.PERSPECTIVE ? 'perspective' : 'orthographic';
-			return this.cameras[index][cameraMode];
-		}
+		// if (index !== undefined) {
+		// 	const cameraMode = Potree.CameraMode.PERSPECTIVE ? 'perspective' : 'orthographic';
+		// 	return this.cameras[index][cameraMode];
+		// }
 		// end HELIX RE
 
 		if(this.overrideCamera){
@@ -370,12 +372,12 @@ export class Scene extends EventDispatcher{
 		this.cameraO.up.set(0, 0, 1);
 		this.cameraO.position.set(1000, 1000, 1000);
 		// HELIX RE
-		this.cameras.forEach((c) => {
-			c.perspective.up.set(0, 0, 1);
-			c.perspective.position.set(1000, 1000, 1000);
-			c.orthographic.up.set(0, 0, 1);
-			c.orthographic.position.set(1000, 1000, 1000);
-		});
+		// this.cameras.forEach((c) => {
+		// 	c.perspective.up.set(0, 0, 1);
+		// 	c.perspective.position.set(1000, 1000, 1000);
+		// 	c.orthographic.up.set(0, 0, 1);
+		// 	c.orthographic.position.set(1000, 1000, 1000);
+		// });
 		// end HELIX RE
 		//this.camera.rotation.y = -Math.PI / 4;
 		//this.camera.rotation.x = -Math.PI / 6;

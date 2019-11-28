@@ -213,7 +213,6 @@ export class EDLRenderer{
 			}
 		});
 
-		// HELIX RE (disable)
 		if(viewer.background === "skybox"){
 			viewer.skybox.camera.rotation.copy(viewer.scene.cameraP.rotation);
 			viewer.skybox.camera.fov = viewer.scene.cameraP.fov;
@@ -223,7 +222,6 @@ export class EDLRenderer{
 		} else if (viewer.background === 'gradient') {
 			viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
 		}
-		// end HELIX RE
 
 		//TODO adapt to multiple lights
 		this.renderShadowMap(visiblePointClouds, camera, lights);
@@ -246,7 +244,7 @@ export class EDLRenderer{
 			
 			// TODO adapt to multiple lights
 			viewer.renderer.setRenderTarget(this.rtEDL);
-			
+
 			if(lights.length > 0){
 				viewer.pRenderer.render(viewer.scene.scenePointCloud, camera, this.rtEDL, {
 					clipSpheres: viewer.scene.volumes.filter(v => (v instanceof SphereVolume)),
@@ -263,35 +261,9 @@ export class EDLRenderer{
 			
 		}
 
-		// HELIX RE
-		// Loop through all renderers
-		// console.log(viewer.renderers);
-		// viewer.renderers.forEach((renderer, index) => {
-		// 	if(viewer.background === "skybox"){
-		// 		viewer.skybox.camera.rotation.copy(viewer.scene.cameraP.rotation);
-		// 		viewer.skybox.camera.fov = viewer.scene.cameraP.fov;
-		// 		viewer.skybox.camera.aspect = viewer.scene.cameraP.aspect;
-		// 		viewer.skybox.camera.updateProjectionMatrix();
-		// 		renderer.render(viewer.skybox.scene, viewer.skybox.camera);
-		// 	} else if (viewer.background === 'gradient') {
-		// 		renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
-		// 	}
-
-		// 	renderer.setRenderTarget(null);
-		// 	renderer.render(viewer.scene.scene, camera);
-
-		// 	// Dispatch event only once
-		// 	if (index === 0) {
-		// 		viewer.dispatchEvent({type: "render.pass.scene", viewer: viewer, renderTarget: this.rtRegular});
-		// 	}
-		// });
-		// end HELIX RE
-		
-		// HELIX RE (disable)
 		viewer.dispatchEvent({type: "render.pass.scene", viewer: viewer, renderTarget: this.rtRegular});
 		viewer.renderer.setRenderTarget(null);
 		viewer.renderer.render(viewer.scene.scene, camera);
-		// end HELIX RE
 
 		{ // EDL PASS
 

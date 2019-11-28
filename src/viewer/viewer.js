@@ -144,8 +144,8 @@ export class Viewer extends EventDispatcher{
 		this.renderer = null;
 		this.pRenderer = null;
 		// HELIX RE (why do we need 2 renderers?)
-		this.pRenderer2 = null;
-		this.pRenderers = [];
+		// this.pRenderer2 = null;
+		// this.pRenderers = [];
 		// end HELIX RE
 
 		this.scene = null;
@@ -197,8 +197,8 @@ export class Viewer extends EventDispatcher{
 		
 		this.pRenderer = new Renderer(this.renderer);
 		// HELIX RE
-		this.pRenderer2 = new Renderer(this.renderer);
-		this.pRenderers = [this.pRenderer, this.pRenderer2];
+		// this.pRenderer2 = new Renderer(this.renderer);
+		// this.pRenderers = [this.pRenderer, this.pRenderer2];
 		// end HELIX RE
 		
 		{
@@ -855,12 +855,12 @@ export class Viewer extends EventDispatcher{
 		// When browser tab is in the background, controls are not set
 		// before the first fitToScreen call.
 		// TODO: Investigate if this is really needed?
-		if (!this.controls) {
-			setTimeout(() => {
-				this.fitToScreen(factor, animationDuration, callback);
-			}, 200);
-			return;
-		}
+		// if (!this.controls) {
+		// 	setTimeout(() => {
+		// 		this.fitToScreen(factor, animationDuration, callback);
+		// 	}, 200);
+		// 	return;
+		// }
 	// end HELIX RE
 		let box = this.getBoundingBox(this.scene.pointclouds);
 
@@ -1317,25 +1317,29 @@ export class Viewer extends EventDispatcher{
 	}
 
 	// HELIX RE
-	initThree () {
-		// TODO: (from Damian I think)
-		this.renderers = [];
-		this.createRenderer(this.renderArea, 0);
-		// TODO:
-		if (this.renderAreas[1]) {
-			this.createRenderer(this.renderAreas[1], 1);
-		}
-		this.renderer = this.renderers[0];
-	}
+	// initThree () {
+	// 	// TODO: (from Damian I think)
+	// 	this.renderers = [];
+	// 	this.createRenderer(this.renderArea, 0);
+	// 	// TODO:
+	// 	if (this.renderAreas[1]) {
+	// 		this.createRenderer(this.renderAreas[1], 1);
+	// 	}
+	// 	this.renderer = this.renderers[0];
+	// }
 	// end HELIX RE
 
-	createRenderer(domElement, index) {
+	// createRenderer(domElement, index) {
+	initThree() {
 
 		// console.log(`initializing three.js ${THREE.REVISION}`);
 
+		let width = this.renderArea.clientWidth;
+		let height = this.renderArea.clientHeight;
+
 		// HELIX RE
-		let width = domElement.clientWidth;
-		let height = domElement.clientHeight;
+		// let width = domElement.clientWidth;
+		// let height = domElement.clientHeight;
 		// end HELIX RE
 
 		let contextAttributes = {
@@ -1370,8 +1374,9 @@ export class Viewer extends EventDispatcher{
 		this.renderer.sortObjects = false;
 		this.renderer.setSize(width, height);
 		this.renderer.autoClear = false;
+		this.renderArea.appendChild(this.renderer.domElement);
 		// HELIX RE
-		domElement.appendChild(this.renderer.domElement);
+		// domElement.appendChild(this.renderer.domElement);
 		// end HELIX RE
 		// TODO: Maybe we need to set this on each renderer?
 		this.renderer.domElement.tabIndex = '2222';
@@ -1399,7 +1404,7 @@ export class Viewer extends EventDispatcher{
 		//	gl.getExtension("EXT_color_buffer_float");
 		//}
 
-		this.renderers[index] = this.renderer;
+		// this.renderers[index] = this.renderer;
 	}
 
 	onVr(callback){
@@ -2017,9 +2022,9 @@ export class Viewer extends EventDispatcher{
 
 					this.renderer.setSize(width, height);
 					// HELIX RE
-					if (this.renderers[1]) {
-						this.renderers[1].setSize(width, height);
-					}
+					// if (this.renderers[1]) {
+					// 	this.renderers[1].setSize(width, height);
+					// }
 					// end HELIX RE
 					const pixelRatio = this.renderer.getPixelRatio();
 					const aspect = width / height;

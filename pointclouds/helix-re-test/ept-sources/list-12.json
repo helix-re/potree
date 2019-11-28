@@ -1,0 +1,18 @@
+[
+  {
+    "bounds": [
+      -20.00835,
+      2.29515,
+      -0.21625,
+      -5.345750000000001,
+      16.95795,
+      6.70605
+    ],
+    "id": "81567718-fcd3-11e9-a9ae-eefb27bdf710.laz",
+    "inserts": 930392,
+    "path": "gs://helix-dev-point-clouds/tmp/698e06aa-fcd3-11e9-a1a3-a252e0f888f2/81567718-fcd3-11e9-a9ae-eefb27bdf710.laz",
+    "points": 21133654,
+    "status": "inserted",
+    "url": "0.json"
+  }
+]

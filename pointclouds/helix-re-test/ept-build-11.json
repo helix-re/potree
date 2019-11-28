@@ -1,0 +1,13 @@
+{
+  "cacheSize": 64,
+  "maxNodeSize": 262144,
+  "minNodeSize": 65536,
+  "overflowDepth": 2,
+  "software": "Entwine",
+  "subset": {
+    "id": 11,
+    "of": 16
+  },
+  "trustHeaders": true,
+  "version": "2.0.0"
+}

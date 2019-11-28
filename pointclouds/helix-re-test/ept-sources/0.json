@@ -1,0 +1,67 @@
+{
+  "81567718-fcd3-11e9-a9ae-eefb27bdf710.laz": {
+    "bounds": [
+      -20.00835,
+      2.29515,
+      -0.21625,
+      -5.345750000000001,
+      16.95795,
+      6.70605
+    ],
+    "metadata": {
+      "comp_spatialreference": "",
+      "compressed": true,
+      "count": 21133654,
+      "creation_doy": 304,
+      "creation_year": 2019,
+      "dataformat_id": 3,
+      "dataoffset": 333,
+      "filesource_id": 3219,
+      "global_encoding": 0,
+      "global_encoding_base64": "AAA=",
+      "header_size": 227,
+      "major_version": 1,
+      "maxx": -5.34575,
+      "maxy": 16.95795,
+      "maxz": 6.70605,
+      "minor_version": 2,
+      "minx": -20.00835,
+      "miny": 2.29515,
+      "minz": -0.21625,
+      "offset_x": 0,
+      "offset_y": 0,
+      "offset_z": 0,
+      "point_length": 34,
+      "project_id": "00000000-0000-0000-0000-000000000000",
+      "scale_x": 0.0001,
+      "scale_y": 0.0001,
+      "scale_z": 0.0001,
+      "software_id": "PDAL 2.0.0 (ab8306)",
+      "spatialreference": "",
+      "srs": {
+        "compoundwkt": "",
+        "horizontal": "",
+        "isgeocentric": false,
+        "isgeographic": false,
+        "prettycompoundwkt": "",
+        "prettywkt": "",
+        "proj4": "",
+        "units": {
+          "horizontal": "unknown",
+          "vertical": ""
+        },
+        "vertical": "",
+        "wkt": ""
+      },
+      "system_id": "PDAL",
+      "vlr_0": {
+        "data": "AgAAAAMEAQAAAAAAUMMAAP////////////////////8DAAYAFAACAAcACAACAAgABgACAA==",
+        "description": "http://laszip.org",
+        "record_id": 22204,
+        "user_id": "laszip encoded"
+      }
+    },
+    "origin": 0,
+    "points": 21133654
+  }
+}

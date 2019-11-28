@@ -23,18 +23,16 @@ export class BinaryLoader{
 		}
 
 		let url = node.getURL();
-		// HELIX RE
-		let path = node.getHierarchyPath() + '/' + node.name;
-		// end HELIX RE
 
 		if (this.version.equalOrHigher('1.4')) {
 			url += '.bin';
-			// HELIX RE
-			path += '.bin';
-			// end HELIX RE
 		}
 
 		if (Potree.HELIXRE_SignPath) {
+			let path = node.getHierarchyPath() + '/' + node.name;
+			if (this.version.equalOrHigher('1.4')) {
+				path += '.bin';
+			}
 			url += Potree.HELIXRE_SignPath(path);
 		}
 
