@@ -306,11 +306,9 @@ export function updateVisibility(pointclouds, camera, renderer){
 		}
 
 		if (node.isTreeNode()) {
-			// HELIX RE
-			if (Potree.updateVisibilityTreeNode) {
-				Potree.updateVisibilityTreeNode();
+			if (Potree.HELIXRE_UpdateVisibility) {
+				Potree.HELIXRE_UpdateVisibility();
 			}
-			// end HELIX RE
 
 			exports.lru.touch(node.geometryNode);
 			node.sceneNode.visible = true;

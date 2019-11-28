@@ -34,9 +34,9 @@ export class BinaryLoader{
 			// end HELIX RE
 		}
 
-		// HELIX RE
-		url += Potree.signUrl(path);
-		// end HELIX RE
+		if (Potree.HELIXRE_SignPath) {
+			url += Potree.HELIXRE_SignPath(path);
+		}
 
 		let xhr = XHRFactory.createXMLHttpRequest();
 		xhr.open('GET', url, true);

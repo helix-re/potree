@@ -238,12 +238,13 @@ export class PointCloudEptGeometryNode extends PointCloudTreeNode {
 		nodes[this.filename()] = this;
 		this.hasChildren = false;
 
-		// HELIX RE
 		let eptHierarchyFile =
 			`${this.ept.url}ept-hierarchy/${this.filename()}.json`;
-		const sign = Potree.signUrl(`${this.filename()}.json`);
-    	eptHierarchyFile += sign;
-		// end HELIX RE
+
+		if (Potree.HELIXRE_SignPath) {
+			const sign = Potree.HELIXRE_SignPath(`${this.filename()}.json`);
+			eptHierarchyFile += sign;
+		}
 
 		let response = await fetch(eptHierarchyFile);
 		let hier = await response.json();

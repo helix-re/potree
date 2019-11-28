@@ -13,12 +13,13 @@ export class EptLaszipLoader {
 	load(node) {
 		if (node.loaded) return;
 
-		// HELIX RE
-		const fileName = node.url().split('/').reverse()[0];
-		const sign = Potree.signUrl(fileName);
-		let url = node.url() + '.laz' + sign;
-		// let url = node.url() + '.laz';
-		// end HELIX RE
+		let url = node.url() + '.laz';
+
+		if (Potree.HELIXRE_SignPath) {
+			const fileName = node.url().split('/').reverse()[0];
+			const sign = Potree.HELIXRE_SignPath(fileName);
+			url = node.url() + '.laz' + sign;
+		}
 
 		let xhr = XHRFactory.createXMLHttpRequest();
 		xhr.open('GET', url, true);

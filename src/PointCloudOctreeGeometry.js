@@ -203,10 +203,13 @@ export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 			node.loadPoints();
         };
 		if ((node.level % node.pcoGeometry.hierarchyStepSize) === 0) {
-            // HELIX RE
-			const nodePath = node.getHierarchyPath() + '/' + node.name + '.hrc';
-			let hurl = node.pcoGeometry.octreeDir + '/' + nodePath + Potree.signUrl(nodePath);
-			// end HELIX RE
+			// let hurl = node.pcoGeometry.octreeDir + "/../hierarchy/" + node.name + ".hrc";
+			let hurl = node.pcoGeometry.octreeDir + '/' + node.getHierarchyPath() + '/' + node.name + '.hrc';
+
+			if (Potree.HELIXRE_SignPath) {
+				const nodePath = node.getHierarchyPath() + '/' + node.name + '.hrc';
+				hurl = node.pcoGeometry.octreeDir + '/' + nodePath + Potree.HELIXRE_SignPath(nodePath);
+			}
 
 			let xhr = XHRFactory.createXMLHttpRequest();
 			xhr.open('GET', hurl, true);
