@@ -552,8 +552,8 @@ vec3 getColor(){
 	#elif defined color_type_height || defined color_type_elevation
 		color = getElevation();
 	// HELIX RE
-	#elif defined color_type_rgb_highlight
-		color = vec3(124.0 / 255.0, 215.0 / 255.0, 244.0 / 255.0);
+	// #elif defined color_type_rgb_highlight
+	// 	color = vec3(124.0 / 255.0, 215.0 / 255.0, 244.0 / 255.0);
 	// end HELIX RE
 	#elif defined color_type_rgb_height
 		vec3 cHeight = getElevation();

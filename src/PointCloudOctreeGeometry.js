@@ -205,7 +205,7 @@ export class PointCloudOctreeGeometryNode extends PointCloudTreeNode{
 		if ((node.level % node.pcoGeometry.hierarchyStepSize) === 0) {
             // HELIX RE
 			const nodePath = node.getHierarchyPath() + '/' + node.name + '.hrc';
-			let hurl = node.pcoGeometry.octreeDir + '/' + nodePath + Potree.getSignatureKeyForPath(nodePath);
+			let hurl = node.pcoGeometry.octreeDir + '/' + nodePath + Potree.signUrl(nodePath);
 			// end HELIX RE
 
 			let xhr = XHRFactory.createXMLHttpRequest();

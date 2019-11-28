@@ -28,9 +28,12 @@ export class OrbitControls extends EventDispatcher{
 		
 		this.viewer = viewer;
 		// HELIX RE
-		// this.renderer = viewer.renderer;
-		this.index = index;
-		this.renderer = viewer.renderers[index];
+		if (index === undefined) {
+			this.renderer = viewer.renderer;
+		} else {
+			this.index = index;
+			this.renderer = viewer.renderers[index];
+		}
 		// end HELIX RE
 
 		this.scene = null;
@@ -81,8 +84,7 @@ export class OrbitControls extends EventDispatcher{
 
 		let scroll = (e) => {
 			// HELIX RE
-			// let resolvedRadius = this.scene.view.radius + this.radiusDelta;
-			let resolvedRadius = this.scene.views[index].radius + this.radiusDelta;
+			const resolvedRadius = this.getView().radius + this.radiusDelta;
 			// end HELIX RE
 
 			this.radiusDelta += -e.delta * resolvedRadius * 0.1;
@@ -118,8 +120,7 @@ export class OrbitControls extends EventDispatcher{
 
 				let delta = currDist / prevDist;
 				// HELIX RE
-				// let resolvedRadius = this.scene.view.radius + this.radiusDelta;
-				let resolvedRadius = this.scene.views[index].radius + this.radiusDelta;
+				const resolvedRadius = this.getView().radius + this.radiusDelta;
 				// end HELIX RE
 				let newRadius = resolvedRadius / delta;
 				this.radiusDelta = newRadius - resolvedRadius;
@@ -158,6 +159,12 @@ export class OrbitControls extends EventDispatcher{
 		this.addEventListener('dblclick', dblclick);
 	}
 
+	getView() {
+		return this.index === undefined
+			? this.scene.view
+			: this.scene.views[this.index];
+	}
+
 	setScene (scene) {
 		this.scene = scene;
 	}
@@ -194,15 +201,13 @@ export class OrbitControls extends EventDispatcher{
 			let lastNode = nodes[nodes.length - 1];
 			let radius = lastNode.getBoundingSphere(new THREE.Sphere()).radius;
 			// HELIX RE
-			// targetRadius = Math.min(this.scene.view.radius, radius);
-			targetRadius = Math.min(this.scene.views[this.index].radius, radius);
+			targetRadius = Math.min(this.getView().radius, radius);
 			// end HELIX RE
 			targetRadius = Math.max(minimumJumpDistance, targetRadius);
 		}
 
 		// HELIX RE
-		// let d = this.scene.view.direction.multiplyScalar(-1);
-		let d = this.scene.views[this.index].direction.multiplyScalar(-1);
+		const d = this.getView().direction.multiplyScalar(-1);
 		// end HELIX RE
 		let cameraTargetPosition = new THREE.Vector3().addVectors(I.location, d.multiplyScalar(targetRadius));
 		// TODO Unused: let controlsTargetPosition = I.location;
@@ -217,24 +222,22 @@ export class OrbitControls extends EventDispatcher{
 			this.tweens.push(tween);
 
 			// HELIX RE
-			// let startPos = this.scene.view.position.clone();
-			let startPos = this.scene.views[this.index].position.clone();
+			let startPos = this.getView().position.clone();
 			// end HELIX RE
 			let targetPos = cameraTargetPosition.clone();
 			// HELIX RE
-			// let startRadius = this.scene.view.radius;
-			let startRadius = this.scene.views[this.index].radius;
+			let startRadius = this.getView().radius;
 			// end HELIX RE
 			let targetRadius = cameraTargetPosition.distanceTo(I.location);
 
 			tween.onUpdate(() => {
 				let t = value.x;
 				// HELIX RE
-				const view = this.scene.views[this.index];
+				const view = this.getView();
 				view.position.x = (1 - t) * startPos.x + t * targetPos.x;
 				view.position.y = (1 - t) * startPos.y + t * targetPos.y;
 				view.position.z = (1 - t) * startPos.z + t * targetPos.z;
-				
+
 				view.radius = (1 - t) * startRadius + t * targetRadius;
 				this.viewer.setMoveSpeed(view.radius / 2.5);
 				// end HELIX RE
@@ -255,8 +258,7 @@ export class OrbitControls extends EventDispatcher{
 
 	update (delta) {
 		// HELIX RE
-		// let view = this.scene.view;
-		let view = this.scene.views[this.index] || this.scene.view;
+		let view = this.getView();
 		// end HELIX RE
 
 		{ // apply rotation

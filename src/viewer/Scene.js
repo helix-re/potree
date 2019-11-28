@@ -337,9 +337,11 @@ export class Scene extends EventDispatcher{
 	}
 
 	// HELIX RE
-	getActiveCamera(index = 0) {
-		const cameraMode = Potree.CameraMode.PERSPECTIVE ? 'perspective' : 'orthographic';
-		return this.cameras[index][cameraMode];
+	getActiveCamera(index) {
+		if (index !== undefined) {
+			const cameraMode = Potree.CameraMode.PERSPECTIVE ? 'perspective' : 'orthographic';
+			return this.cameras[index][cameraMode];
+		}
 		// end HELIX RE
 
 		if(this.overrideCamera){

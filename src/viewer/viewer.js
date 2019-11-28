@@ -143,7 +143,7 @@ export class Viewer extends EventDispatcher{
 		this.edlRenderer = null;
 		this.renderer = null;
 		this.pRenderer = null;
-		// HELIX RE
+		// HELIX RE (why do we need 2 renderers?)
 		this.pRenderer2 = null;
 		this.pRenderers = [];
 		// end HELIX RE
@@ -854,6 +854,7 @@ export class Viewer extends EventDispatcher{
 	fitToScreen (factor = 1, animationDuration = 0, callback) {
 		// When browser tab is in the background, controls are not set
 		// before the first fitToScreen call.
+		// TODO: Investigate if this is really needed?
 		if (!this.controls) {
 			setTimeout(() => {
 				this.fitToScreen(factor, animationDuration, callback);
@@ -1317,7 +1318,7 @@ export class Viewer extends EventDispatcher{
 
 	// HELIX RE
 	initThree () {
-		// TODO:
+		// TODO: (from Damian I think)
 		this.renderers = [];
 		this.createRenderer(this.renderArea, 0);
 		// TODO:
@@ -1372,6 +1373,7 @@ export class Viewer extends EventDispatcher{
 		// HELIX RE
 		domElement.appendChild(this.renderer.domElement);
 		// end HELIX RE
+		// TODO: Maybe we need to set this on each renderer?
 		this.renderer.domElement.tabIndex = '2222';
 		this.renderer.domElement.style.position = 'absolute';
 		this.renderer.domElement.addEventListener('mousedown', () => {

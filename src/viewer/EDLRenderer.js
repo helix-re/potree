@@ -214,15 +214,15 @@ export class EDLRenderer{
 		});
 
 		// HELIX RE (disable)
-		// if(viewer.background === "skybox"){
-		// 	viewer.skybox.camera.rotation.copy(viewer.scene.cameraP.rotation);
-		// 	viewer.skybox.camera.fov = viewer.scene.cameraP.fov;
-		// 	viewer.skybox.camera.aspect = viewer.scene.cameraP.aspect;
-		// 	viewer.skybox.camera.updateProjectionMatrix();
-		// 	viewer.renderer.render(viewer.skybox.scene, viewer.skybox.camera);
-		// } else if (viewer.background === 'gradient') {
-		// 	viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
-		// }
+		if(viewer.background === "skybox"){
+			viewer.skybox.camera.rotation.copy(viewer.scene.cameraP.rotation);
+			viewer.skybox.camera.fov = viewer.scene.cameraP.fov;
+			viewer.skybox.camera.aspect = viewer.scene.cameraP.aspect;
+			viewer.skybox.camera.updateProjectionMatrix();
+			viewer.renderer.render(viewer.skybox.scene, viewer.skybox.camera);
+		} else if (viewer.background === 'gradient') {
+			viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
+		}
 		// end HELIX RE
 
 		//TODO adapt to multiple lights
@@ -265,31 +265,32 @@ export class EDLRenderer{
 
 		// HELIX RE
 		// Loop through all renderers
-		viewer.renderers.forEach((renderer, index) => {
-			if(viewer.background === "skybox"){
-				viewer.skybox.camera.rotation.copy(viewer.scene.cameraP.rotation);
-				viewer.skybox.camera.fov = viewer.scene.cameraP.fov;
-				viewer.skybox.camera.aspect = viewer.scene.cameraP.aspect;
-				viewer.skybox.camera.updateProjectionMatrix();
-				renderer.render(viewer.skybox.scene, viewer.skybox.camera);
-			} else if (viewer.background === 'gradient') {
-				renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
-			}
+		// console.log(viewer.renderers);
+		// viewer.renderers.forEach((renderer, index) => {
+		// 	if(viewer.background === "skybox"){
+		// 		viewer.skybox.camera.rotation.copy(viewer.scene.cameraP.rotation);
+		// 		viewer.skybox.camera.fov = viewer.scene.cameraP.fov;
+		// 		viewer.skybox.camera.aspect = viewer.scene.cameraP.aspect;
+		// 		viewer.skybox.camera.updateProjectionMatrix();
+		// 		renderer.render(viewer.skybox.scene, viewer.skybox.camera);
+		// 	} else if (viewer.background === 'gradient') {
+		// 		renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
+		// 	}
 
-			renderer.setRenderTarget(null);
-			renderer.render(viewer.scene.scene, camera);
+		// 	renderer.setRenderTarget(null);
+		// 	renderer.render(viewer.scene.scene, camera);
 
-			// Dispatch event only once
-			if (index === 0) {
-				viewer.dispatchEvent({type: "render.pass.scene", viewer: viewer, renderTarget: this.rtRegular});
-			}
-		});
+		// 	// Dispatch event only once
+		// 	if (index === 0) {
+		// 		viewer.dispatchEvent({type: "render.pass.scene", viewer: viewer, renderTarget: this.rtRegular});
+		// 	}
+		// });
 		// end HELIX RE
 		
 		// HELIX RE (disable)
-		// viewer.dispatchEvent({type: "render.pass.scene", viewer: viewer, renderTarget: this.rtRegular});
-		// viewer.renderer.setRenderTarget(null);
-		// viewer.renderer.render(viewer.scene.scene, camera);
+		viewer.dispatchEvent({type: "render.pass.scene", viewer: viewer, renderTarget: this.rtRegular});
+		viewer.renderer.setRenderTarget(null);
+		viewer.renderer.render(viewer.scene.scene, camera);
 		// end HELIX RE
 
 		{ // EDL PASS

@@ -15,7 +15,7 @@ export class EptLaszipLoader {
 
 		// HELIX RE
 		const fileName = node.url().split('/').reverse()[0];
-		const sign = Potree.getSignatureKeyForPath(fileName);
+		const sign = Potree.signUrl(fileName);
 		let url = node.url() + '.laz' + sign;
 		// let url = node.url() + '.laz';
 		// end HELIX RE
