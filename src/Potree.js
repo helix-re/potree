@@ -108,9 +108,6 @@ if (document.currentScript.src) {
 } else {
 	console.error('Potree was unable to find its script path using document.currentScript. Is Potree included with a script tag? Does your browser support this function?');
 }
-// HELIX RE
-// scriptPath = '/pointcloud-viewer/libs/potree/';
-// end HELIX RE
 
 let resourcePath = scriptPath + '/resources';
 

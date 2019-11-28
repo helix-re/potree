@@ -307,10 +307,9 @@ export function updateVisibility(pointclouds, camera, renderer){
 
 		if (node.isTreeNode()) {
 			// HELIX RE
-			// if (!pointcloud.initialLoadFinished) {
-			// 	pointcloud.initialLoadFinished = true;
-			// 	pointcloud.dispatchEvent({ type: 'pointcloud_ready' });
-			// }
+			if (Potree.updateVisibilityTreeNode) {
+				Potree.updateVisibilityTreeNode();
+			}
 			// end HELIX RE
 
 			exports.lru.touch(node.geometryNode);

@@ -2220,13 +2220,11 @@ export class Viewer extends EventDispatcher{
 
 			this.vr.display.submitFrame();
 		}else{
-			// HELIX RE
-			if (window.THREE && window.THREE.REVISION === '109') {
-				requestAnimationFrame(this.loop.bind(this));
-				this.update(this.clock.getDelta(), timestamp);
-				this.render();
-			}
-			// end HELIX RE
+			requestAnimationFrame(this.loop.bind(this));
+
+			this.update(this.clock.getDelta(), timestamp);
+
+			this.render();
 		}
 
 
