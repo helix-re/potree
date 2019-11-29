@@ -17,8 +17,7 @@ export class EptLaszipLoader {
 
 		if (Potree.HELIXRE_SignPath) {
 			const fileName = node.url().split('/').reverse()[0];
-			const sign = Potree.HELIXRE_SignPath(fileName);
-			url = node.url() + '.laz' + sign;
+			url += Potree.HELIXRE_SignPath(fileName);
 		}
 
 		let xhr = XHRFactory.createXMLHttpRequest();

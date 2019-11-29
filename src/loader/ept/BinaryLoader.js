@@ -14,6 +14,15 @@ export class EptBinaryLoader {
 
 		let url = node.url() + this.extension();
 
+		// HELIX RE: Previous code in ZstandardLoader, needs to be moved here
+		// Does it work?
+		if (Potree.HELIXRE_SignPath) {
+			// let url = node.url() + this.extension();
+			// const path = url.split('/').splice(-2, 2).join('/');
+			// const sign = Potree.getSignatureKeyForPath(path);
+		}
+		// end HELIX RE
+
 		let xhr = XHRFactory.createXMLHttpRequest();
 		xhr.open('GET', url, true);
 		xhr.responseType = 'arraybuffer';
